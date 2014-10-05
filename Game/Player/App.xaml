@@ -1,0 +1,24 @@
+﻿<Application x:Class="Player.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Player.ViewModel"
+             xmlns:v="clr-namespace:Player.View"
+             xmlns:tvm="clr-namespace:Player.ViewModel.Tabs"
+             xmlns:tv="clr-namespace:Player.View.TabView"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+        
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <v:LoginView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:MainViewModel}">
+            <v:MainView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type tvm:MainTab}">
+            <tv:MainView />
+        </DataTemplate>
+
+    </Application.Resources>
+</Application>
