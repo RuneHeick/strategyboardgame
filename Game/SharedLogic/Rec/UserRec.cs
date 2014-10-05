@@ -107,6 +107,8 @@ namespace Logic
                         else
                             return false;
                     }
+                    else
+                        return false; 
                 }
 
                 foreach (Action a in updates)

@@ -1,0 +1,9 @@
+Create
+Space=0
+Give 
+Space=4
+Cost
+Food=1
+Water=1
+BuildingFee
+Power=5

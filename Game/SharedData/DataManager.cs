@@ -57,6 +57,7 @@ namespace SharedData
 
                 DataByName.Add(item.Name, item);
                 item.PropertyChanged += item_PropertyChanged;
+                item_PropertyChanged(item, null);
                 if (CollectionChanged != null)
                     CollectionChanged(item.Name, item, ChangeType.Added, this); 
                 return true;
@@ -173,7 +174,7 @@ namespace SharedData
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
             }
         }

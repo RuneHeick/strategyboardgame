@@ -14,7 +14,7 @@ namespace SharedLogic
     {
         public ObservableCollection<BuildingContainor> Factories { get; private set; }
         DataManager manager;
-        UserRec rec;
+        public UserRec rec { get; private set;  }
 
         public UserProduction(DataManager Manager, UserRec rec)
         {
@@ -61,8 +61,7 @@ namespace SharedLogic
             lock (Factories)
             {
                 var building = new BuildingContainor(Type, Id, Uses, creates, Creationbonus);
-                if(manager.Add(building))
-                    Factories.Add(building);
+                manager.Add(building);
             }
         }
 
@@ -92,20 +91,21 @@ namespace SharedLogic
 
         public void GiveBonus(BuildingContainor item)
         {
-            rec.Increase(item.CreationBonus.Resource, item.CreationBonus.Quantity);
+            if (item.CreationBonus != null)
+                rec.Increase(item.CreationBonus.Resource, item.CreationBonus.Quantity);
         }
 
         public void RemoveBonus(BuildingContainor item)
         {
-            rec.Increase(item.CreationBonus.Resource, -item.CreationBonus.Quantity);
+            if (item.CreationBonus != null)
+                rec.Increase(item.CreationBonus.Resource, -item.CreationBonus.Quantity);
         }
 
         public void AddFactory(BuildingContainor building)
         {
             lock (Factories)
             {
-                if (manager.Add(building))
-                    Factories.Add(building);
+                manager.Add(building);
             }
         }
     }
