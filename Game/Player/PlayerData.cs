@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using SharedData.Types;
+using Utility.ViewModel;
 
 namespace Player
 {
@@ -27,7 +28,7 @@ namespace Player
             }
         }
 
-        public Action<string> SwitchViewFunction { get; set; }
+        public Action<ViewModelBase> SwitchViewFunction { get; set; }
 
         private PlayerData() 
         {
@@ -36,7 +37,7 @@ namespace Player
             // Client setup in connect;
         }
 
-        public void SwitchView(string view)
+        public void SwitchView(ViewModelBase view)
         {
             if(SwitchViewFunction != null)
             {
@@ -58,7 +59,7 @@ namespace Player
             Client.dataManager.CollectionChanged -= dataManager_CollectionChanged;
         }
 
-        void dataManager_CollectionChanged(string Name, ISharedData item, ChangeType ctype)
+        void dataManager_CollectionChanged(string Name, ISharedData item, ChangeType ctype, DataManager manager)
         {
             if(Name.Contains("Resources"))
             {

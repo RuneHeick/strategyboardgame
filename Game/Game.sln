@@ -13,7 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "SharedData\Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{C4D9761E-318F-425C-BB76-A83D476C2E6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLogic", "SharedLogic\SharedLogic.csproj", "{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}"
+EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -39,6 +45,10 @@ Global
 		{C4D9761E-318F-425C-BB76-A83D476C2E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4D9761E-318F-425C-BB76-A83D476C2E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4D9761E-318F-425C-BB76-A83D476C2E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

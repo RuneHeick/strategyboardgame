@@ -3,8 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:l="clr-namespace:Player.View.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <l:RecImageConverter x:Key="recImageConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" MinHeight="5" />
@@ -17,7 +21,7 @@
 
         <TextBlock Text="{Binding Name ,FallbackValue=Name}" FontSize="20" Grid.Row="0"></TextBlock>
 
-        <ItemsControl Grid.Column="1">
+        <ItemsControl Grid.Column="1" ItemsSource="{Binding Resources}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -25,12 +29,12 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" >
-                        <Image Height="10" Width="10" Source="{Binding Icon}"/>
-                        <TextBlock Text="{Binding Value}" />
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" >
+                        <Image Height="25" Width="25" Source="{Binding Converter={StaticResource recImageConverter}}"   />
+                        <TextBlock Margin="5,0,5,0" Text="{Binding Value}" VerticalAlignment="Center" />
                         <StackPanel.ToolTip>
                             <ToolTip>
-                                <TextBlock Text="{Binding Description}" />
+                                <TextBlock Text="{Binding RealName}" />
                             </ToolTip>
                         </StackPanel.ToolTip>
                     </StackPanel>

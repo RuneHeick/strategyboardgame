@@ -33,6 +33,8 @@ namespace Player.ViewModel
             }
         }
 
+        public bool IsCreate { get; set; }
+
         public LoginViewModel()
         {
             Ip = "127.0.0.1";
@@ -58,9 +60,8 @@ namespace Player.ViewModel
                 PlayerData.Instance.Connect(Ip, Port);
                 GameClient client = PlayerData.Instance.Client;
 
-                client.Login(Name, Password, true);
+                client.Login(Name, Password, IsCreate);
                 client.OnLoginComplete += client_OnLoginComplete;
-                client.OnDisconnect += client_OnDisconnect;
             }
             catch
             {
@@ -68,16 +69,12 @@ namespace Player.ViewModel
             }
         }
 
-        void client_OnDisconnect(Network.Server.ClientData obj)
-        {
-            PlayerData.Instance.SwitchView("Login");
-        }
-
         void client_OnLoginComplete(bool obj)
         {
+            PlayerData.Instance.Client.OnLoginComplete -= client_OnLoginComplete;
             if (obj)
             {
-                PlayerData.Instance.SwitchView("Main");
+                PlayerData.Instance.SwitchView(new MainViewModel());
             }
             else
                 ErrorMsg = "Login forkert";
