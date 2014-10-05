@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Logic
 {
+    [Serializable]
     public class RecDemand
     {
         public string Rec { get; set; }

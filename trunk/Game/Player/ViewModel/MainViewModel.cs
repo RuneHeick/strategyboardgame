@@ -39,7 +39,7 @@ namespace Player.ViewModel
             Tabs = new ObservableCollection<TabBase>();
             PlayerData.Instance.Client.OnDisconnect += Client_OnDisconnect;
             Tabs.Add(new MainTab());
-
+            Tabs.Add(new BuildingsTab());
             Rec = new UserRec(PlayerData.Instance.Client.dataManager); 
         }
 

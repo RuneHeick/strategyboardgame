@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Network.Server
 {
@@ -107,7 +108,7 @@ namespace Network.Server
                     readindex += len; 
                     if(readindex == Databuffer.Length)
                     {
-                        HandleEvent((NetworkCommands)sizebuffer[0], Databuffer);
+                        Application.Current.Dispatcher.Invoke(new Action(() => HandleEvent((NetworkCommands)sizebuffer[0], Databuffer)));
                         readindex = 0; 
                         stream.BeginRead(sizebuffer, 0, sizebuffer.Length, DataReceivedSize, stream);
                     }

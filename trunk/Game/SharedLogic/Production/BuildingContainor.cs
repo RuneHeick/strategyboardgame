@@ -17,7 +17,7 @@ namespace SharedData.Types
         {
             get
             {
-                return "Fac" + Name + Id;
+                return "Fac" + Type + Id;
             }
             set
             {
@@ -96,14 +96,21 @@ namespace SharedData.Types
                 if (IsActive)
                 {
                     List<RecDemand> Recdem = new List<RecDemand>();
-                    foreach (UseCond con in Uses)
+                    if (Uses != null)
                     {
-                        Recdem.Add(con.AsRecDem());
+                        foreach (UseCond con in Uses)
+                        {
+                            Recdem.Add(con.AsRecDem());
+                        }
                     }
 
                     if (rec.Use(Recdem))
                     {
                         rec.Increase(ProductionType.Resource, ProductionType.Quantity);
+                    }
+                    else
+                    {
+                        IsActive = false; 
                     }
                 }
             }

@@ -1,0 +1,5 @@
+Create
+Power=10
+Give
+Cost
+BuildingFee

@@ -10,18 +10,54 @@ using System.Windows.Media.Imaging;
 using System.Collections.ObjectModel;
 using Logic;
 using SharedLogic;
+using System.Windows.Threading;
+using System.Windows;
+using SharedLogic.Production;
 
 namespace Coordinator.Logic
 {
     class ProLogic:ILogic
     {
+        Dictionary<string, BuildingContainor> AllBuildings = new Dictionary<string, BuildingContainor>();
+        public Building.BuildingLoader BuildingManager { get; private set;  }
         ObservableCollection<UserProduction> UserBuildings;
         RCLogic recManager;
 
+        DispatcherTimer ProductionTimer;
+
+        public TimeSpan UpdateInterval
+        {
+            get
+            {
+                return ProductionTimer.Interval; 
+            }
+            set
+            {
+                ProductionTimer.Interval = value; 
+            }
+        }
+
         public ProLogic(RCLogic RecManager)
         {
+            BuildingManager = new Building.BuildingLoader("Buildings"); 
             UserBuildings = new ObservableCollection<UserProduction>();
-            recManager = RecManager; 
+            recManager = RecManager;
+
+            ProductionTimer = new DispatcherTimer();
+            ProductionTimer.Tick += new EventHandler(timer_Tick);
+            ProductionTimer.Interval = new TimeSpan(0, 0, 0, 5, 0);
+            ProductionTimer.Start(); 
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            lock(UserBuildings)
+            {
+                foreach(UserProduction up in UserBuildings)
+                {
+                    up.DoProduction();
+                }
+            }
         }
 
         public void Create(string name, DataManager data)
@@ -36,9 +72,49 @@ namespace Coordinator.Logic
             pro.Factories.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((sender, e) =>Factories_CollectionChanged(sender,e,pro));
             StringContainor MoveRq = new StringContainor("BuildingMove");
             data.Add(MoveRq);
+            data.Add(new BuildingInfoContainor("Buildings"));
             MoveRq.Value = ""; 
 
             MoveRq.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler((o,p)=> MoveRqChanged(o,p,pro));
+
+            data.CollectionChanged += new Action<string,ISharedData,ChangeType,DataManager>((a,b,c,d)=>data_CollectionChanged(a,b,c,d,pro));
+        }
+
+        void data_CollectionChanged(string arg1, ISharedData arg2, ChangeType arg3, DataManager arg4, UserProduction pro)
+        {
+            if (arg3 == ChangeType.Added)
+            {
+                CreateBuildingRq Rq = arg2 as CreateBuildingRq;
+                if (Rq != null)
+                {
+                    AddBuilding(Rq, arg4, pro);
+                    arg4.Remove(Rq);
+                }
+            }
+        }
+
+        private void AddBuilding(CreateBuildingRq Rq, DataManager data, UserProduction pro)
+        {
+            var b = BuildingManager.GetBuilding(Rq.Type, pro.rec);
+            if(b != null)
+            {
+                data.Add(b);
+            }
+        }
+
+        private void Init(UserProduction pro)
+        {
+            List<BuildingContainor.UseCond> Con = new List<BuildingContainor.UseCond>();
+            Con.Add(new BuildingContainor.UseCond() { Resource = "Water", Quantity = 5 });
+            Con.Add(new BuildingContainor.UseCond() { Resource = "Food", Quantity = 5 });
+            BuildingContainor.UseCond create = new BuildingContainor.UseCond{Resource = "Space", Quantity = 0};
+             BuildingContainor.UseCond bonus = new BuildingContainor.UseCond{Resource = "Space", Quantity = 4};
+             BuildingContainor house = new BuildingContainor("House", "AX5C", Con, create, bonus);
+             house.IsActive = true; 
+             
+            
+             pro.AddFactory(house);
+             AllBuildings.Add(house.Id, house); 
         }
 
         private void MoveRqChanged(object o, System.ComponentModel.PropertyChangedEventArgs p, UserProduction pro)
@@ -72,14 +148,33 @@ namespace Coordinator.Logic
             {
                 var item = e.NewItems[0] as BuildingContainor;
                 pro.GiveBonus(item);
+                item.PropertyChanged += (s,p) => OnActiveChanged(s,p,pro); 
             }
             else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
-                var item = e.NewItems[0] as BuildingContainor;
+                var item = e.OldItems[0] as BuildingContainor;
                 pro.RemoveBonus(item);
+                item.PropertyChanged -= (s,p) => OnActiveChanged(s,p,pro);
+            }
+        }
+
+        private void OnActiveChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e, UserProduction pro )
+        {
+            var item = sender as BuildingContainor;
+            if(e.PropertyName == "IsActive" )
+            {
+                if(item.IsActive)
+                {
+                    pro.GiveBonus(item);
+                }
+                else
+                {
+                    pro.RemoveBonus(item);
+                }
             }
         }
 
 
+  
     }
 }
