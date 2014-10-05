@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SharedData
 {
@@ -57,7 +58,7 @@ namespace SharedData
                 DataByName.Add(item.Name, item);
                 item.PropertyChanged += item_PropertyChanged;
                 if (CollectionChanged != null)
-                    CollectionChanged(item.Name, item, ChangeType.Added); 
+                    CollectionChanged(item.Name, item, ChangeType.Added, this); 
                 return true;
             }
         }
@@ -75,7 +76,7 @@ namespace SharedData
                     DataByName.Remove(item.Name);
 
                     if (CollectionChanged != null)
-                        CollectionChanged(item.Name, item, ChangeType.Removed);
+                        CollectionChanged(item.Name, item, ChangeType.Removed, this);
                 }
             }
         }
@@ -88,18 +89,22 @@ namespace SharedData
                 if (item != null)
                 {
                     PendingNetworkUpdate.Enqueue(item);
-                    if (Updates != null)
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        try
+                        if (Updates != null)
                         {
-                            byte[] a = DoNetworkUpdate();
-                            Updates(a);
-                        }
-                        catch(Exception t)
-                        {
+                            try
+                            {
+                                byte[] a = DoNetworkUpdate();
+                                if(a != null)
+                                    Updates(a);
+                            }
+                            catch (Exception t)
+                            {
 
+                            }
                         }
-                    }
+                    }));
                 }
             }
         }
@@ -164,7 +169,7 @@ namespace SharedData
                         DataByName.Add(tempitem.Name, tempitem);
                         DataByName[tempitem.Name].PropertyChanged += item_PropertyChanged;
                         if (CollectionChanged != null)
-                            CollectionChanged(tempitem.Name, tempitem, ChangeType.Added); 
+                            CollectionChanged(tempitem.Name, tempitem, ChangeType.Added, this); 
                     }
                 }
             }
@@ -176,7 +181,7 @@ namespace SharedData
         public event Action<byte[]> Updates;
         public event Action<ISharedData> ItemRemoved; 
 
-        public event Action<string,ISharedData, ChangeType> CollectionChanged;
+        public event Action<string,ISharedData, ChangeType, DataManager> CollectionChanged;
 
 
     }

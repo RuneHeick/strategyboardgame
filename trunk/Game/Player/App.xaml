@@ -16,6 +16,10 @@
             <v:MainView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type vm:TurnViewModel}">
+            <v:TurnView />
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type tvm:MainTab}">
             <tv:MainView />
         </DataTemplate>

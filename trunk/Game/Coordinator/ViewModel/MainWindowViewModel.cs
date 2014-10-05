@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Network.Server;
 using SharedData.Types;
 using Network;
+using System.Windows.Media;
+using Coordinator.Logic;
+using Logic;
 
 namespace Coordinator.ViewModel
 {
@@ -13,34 +16,30 @@ namespace Coordinator.ViewModel
     {
 
         GameServer Server;
-        IntContainor Connected; 
 
+        RCLogic RCManager;  
+        ProLogic ProManager; 
         public MainWindowViewModel()
         {
             Server = new GameServer(5050);
             var RC = Server.RCContainor;
 
 
-            Connected = new IntContainor("Connected");
-            Connected.Value = 0;
             RC.OnDataManagerAdded += RC_OnDataManagerAdded;
             Server.OnClientLogin += Server_OnClientLogin;
-            Server.OnClientDisconneced += Server_OnClientDisconneced;
+
+            RCManager = new RCLogic();
+            ProManager = new ProLogic(RCManager);
+
         }
 
 
-        void RC_OnDataManagerAdded(SharedData.DataManager obj)
+        void RC_OnDataManagerAdded(string UserName, SharedData.DataManager obj)
         {
-            obj.Add(Connected);
-            TagIntContainor Water = new TagIntContainor("Water", "Resources");
-            Water.Value = 50;
-            obj.Add(Water);
+            RCManager.Create(UserName, obj);
+            ProManager.Create(UserName, obj);
         }
 
-        private void Server_OnClientDisconneced(ClientData obj)
-        {
-            Connected.Value--; 
-        }
 
         private void Server_OnClientLogin(AcceptedArg obj)
         {
@@ -51,12 +50,19 @@ namespace Coordinator.ViewModel
                 if (Server.RCContainor.HasManager(obj.Client.LoginName, obj.Client.Password))
                 {
                     obj.IsAccepted = true;
-                    Connected.Value++;
                 }
 
             }
         }
 
+
+        public ImageSource IS
+        {
+            get
+            {
+                return UserRec.GetImage("game point"); 
+            }
+        }
 
     }
 }

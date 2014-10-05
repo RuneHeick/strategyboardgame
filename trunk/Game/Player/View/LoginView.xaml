@@ -23,9 +23,13 @@
             <TextBox Text="{Binding Name}"></TextBox>
             <TextBlock Margin="0,5,0,0">Password:</TextBlock>
             <TextBox Text="{Binding Password}" ></TextBox>
-            <Button Content="Login" Margin="0,5,0,0" Command="{Binding LoginCommand}"/>
+            
             <Expander IsExpanded="False">
+                <Expander.Header>
+                    <Button Content="Login" Margin="0,5,0,0" Command="{Binding LoginCommand}" MinHeight="25" MinWidth="100"/>
+                </Expander.Header>
                 <StackPanel>
+                    <CheckBox IsChecked="{Binding IsCreate}">Create User </CheckBox>
                     <TextBlock Margin="0,5,0,0">Ip:</TextBlock>
                     <TextBox Text="{Binding Ip}"></TextBox>
                     <TextBlock Margin="0,5,0,0">Port:</TextBlock>

@@ -32,14 +32,14 @@ namespace Network.Server
 
                 Items.Add(Name, item);
                 if (OnDataManagerAdded != null)
-                    OnDataManagerAdded(item.Data); 
+                    OnDataManagerAdded(Name,item.Data); 
                 return item.Data; 
             }
 
             return null; 
         }
 
-        public event Action<DataManager> OnDataManagerAdded; 
+        public event Action<string, DataManager> OnDataManagerAdded; 
 
         public DataManager this[string name]
         {

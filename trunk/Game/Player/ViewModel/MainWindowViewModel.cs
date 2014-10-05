@@ -12,9 +12,7 @@ namespace Player.ViewModel
 {
     public class MainWindowViewModel: ViewModelBase
     {
-
-        Dictionary<string, ViewModelBase> Views = new Dictionary<string, ViewModelBase>(); 
-
+        List<ViewModelBase> viewStack = new List<ViewModelBase>();         
         ViewModelBase currentView_;
         public ViewModelBase CurrentView
         {
@@ -29,21 +27,41 @@ namespace Player.ViewModel
             }
         }
 
-        
         public MainWindowViewModel()
         {
-            PlayerData.Instance.SwitchViewFunction = SwitchView; 
-            Views.Add("Login", new LoginViewModel());
-            Views.Add("Main", new MainViewModel());
-            CurrentView = Views["Login"]; 
+            PlayerData.Instance.SwitchViewFunction = AddOnStack; 
+            AddOnStack(new LoginViewModel());
         }
 
-        public void SwitchView(string View)
+        public void AddOnStack(ViewModelBase View)
         {
-            if(Views.ContainsKey(View))
+            if(View != null)
             {
-                CurrentView = Views[View];
+                lock (viewStack)
+                {
+                    View.OnCloseRequest += View_OnCloseRequest;
+                    CurrentView = View;
+                    viewStack.Insert(0, View);
+                }
             }
+        }
+
+        void View_OnCloseRequest(ViewModelBase View)
+        {
+            lock (viewStack)
+            {
+                viewStack.Remove(View);
+                if(viewStack.Count>0)
+                {
+                    if (CurrentView != viewStack[0])
+                        CurrentView = viewStack[0];
+                }
+                else
+                {
+                    CurrentView = null; 
+                }
+            }
+            View.OnCloseRequest -= View_OnCloseRequest;
         }
        
 

@@ -25,6 +25,14 @@ namespace Utility.ViewModel
             }
         }
 
+        public void CreateCloseRequest()
+        {
+            if (OnCloseRequest != null)
+                OnCloseRequest(this);
+        }
+
+        public event Action<ViewModelBase> OnCloseRequest; 
+
 
     }
 }

@@ -53,8 +53,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\TurnViewModel.cs" />
+    <Compile Include="View\Converters\RecImageConverter.cs" />
     <Compile Include="View\TabView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TurnView.xaml.cs">
+      <DependentUpon>TurnView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
@@ -89,6 +94,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\TabView\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TurnView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,6 +138,10 @@
     <ProjectReference Include="..\SharedData\SharedData.csproj">
       <Project>{cd2eeb53-51ac-4c28-ae55-84ccafe298ba}</Project>
       <Name>SharedData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharedLogic\SharedLogic.csproj">
+      <Project>{ccac50f3-b4d3-4546-9795-8049dfbee4cd}</Project>
+      <Name>SharedLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
