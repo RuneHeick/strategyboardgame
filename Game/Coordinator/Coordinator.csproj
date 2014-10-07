@@ -112,6 +112,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Buildings\Hest.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Buildings\Water Plant.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

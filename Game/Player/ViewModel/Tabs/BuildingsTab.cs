@@ -18,7 +18,7 @@ namespace Player.ViewModel.Tabs
 
         public BuildingsTab()
         {
-            Name = "Buildings";
+            Name = "Building shop";
             BuildingInfoContainor b = PlayerData.Instance.Client.dataManager.GetItem<BuildingInfoContainor>("Buildings");
             if(b != null)
             {

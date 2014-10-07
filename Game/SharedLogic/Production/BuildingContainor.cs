@@ -56,8 +56,11 @@ namespace SharedData.Types
             }
             set
             {
-                isActive = value;
-                OnPropertyChanged("IsActive"); 
+                if (isActive != value)
+                {
+                    isActive = value;
+                    OnPropertyChanged("IsActive");
+                }
             }
         }
 
@@ -95,6 +98,27 @@ namespace SharedData.Types
             {
                 if (IsActive)
                 {
+                    if(CreationBonus != null)
+                    {
+                        if(CreationBonus.Quantity<0)
+                        {
+                            TagIntContainor crec = rec.Rec.FirstOrDefault((o) => o.RealName.ToLower() == CreationBonus.Resource.ToLower());
+                            if(crec != null)
+                            {
+                                if(crec.Value < 0)
+                                {
+                                    IsActive = false;
+                                    return;
+                                }
+                            }
+                            else 
+                            {
+                                    IsActive = false;
+                                    return; 
+                            }
+                        }
+                    }
+
                     List<RecDemand> Recdem = new List<RecDemand>();
                     if (Uses != null)
                     {
@@ -106,7 +130,8 @@ namespace SharedData.Types
 
                     if (rec.Use(Recdem))
                     {
-                        rec.Increase(ProductionType.Resource, ProductionType.Quantity);
+                        if (ProductionType!= null)
+                            rec.Increase(ProductionType.Resource, ProductionType.Quantity);
                     }
                     else
                     {
@@ -144,8 +169,6 @@ namespace SharedData.Types
                 {
                     IsActive = con.IsActive;
                     Uses = uses;
-                    ProductionType.Quantity = con.ProductionType.Quantity;
-                    ProductionType.Resource = con.ProductionType.Resource; 
                 }
             }
         }

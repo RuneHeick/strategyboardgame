@@ -1,7 +1,7 @@
 Create
-Space=0
+Worker=0
 Give 
-Space=4
+Worker=4
 Cost
 Food=1
 Water=1

@@ -62,7 +62,7 @@ namespace Coordinator.Logic.Building
             var chars = "ABCDEFGHJKLMNOPQRSTUVWXYZ123456789";
             var random = new Random();
             var result = new string(
-            Enumerable.Repeat(chars, 8)
+            Enumerable.Repeat(chars, 6)
               .Select(s => s[random.Next(s.Length)])
               .ToArray());
 

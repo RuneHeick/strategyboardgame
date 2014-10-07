@@ -55,14 +55,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\NewBuildingViewModel.cs" />
     <Compile Include="ViewModel\Tabs\BuildingsTab.cs" />
+    <Compile Include="ViewModel\Tabs\MyBuildingsTab.cs" />
     <Compile Include="ViewModel\TurnViewModel.cs" />
     <Compile Include="View\Converters\RecImageConverter.cs" />
+    <Compile Include="View\NewBuildingView.xaml.cs">
+      <DependentUpon>NewBuildingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TabView\BuildingsView.xaml.cs">
       <DependentUpon>BuildingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TabView\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TabView\MyBuildingTabView.xaml.cs">
+      <DependentUpon>MyBuildingTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TurnView.xaml.cs">
       <DependentUpon>TurnView.xaml</DependentUpon>
@@ -99,11 +107,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\NewBuildingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TabView\BuildingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TabView\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TabView\MyBuildingTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -139,7 +155,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.csproj">
       <Project>{0f83e9d8-20c1-4660-a732-ef9211f3f1ce}</Project>
@@ -157,6 +172,9 @@
       <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
       <Name>Utility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Rec\Pen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
