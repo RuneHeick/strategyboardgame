@@ -20,12 +20,20 @@
             <v:TurnView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type vm:NewBuildingViewModel}">
+            <v:NewBuildingView />
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type tvm:MainTab}">
             <tv:MainView />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type tvm:BuildingsTab}">
             <tv:BuildingsView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type tvm:MyBuildingsTab}">
+            <tv:MyBuildingTabView />
         </DataTemplate>
 
     </Application.Resources>

@@ -48,6 +48,14 @@
     <Compile Include="Production\Building\BuildingLoader.cs" />
     <Compile Include="Production\BuildingContainor.cs" />
     <Compile Include="Production\CreateBuildingRq.cs" />
+    <Compile Include="Production\View\MyFactoryView.xaml.cs">
+      <DependentUpon>MyFactoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Production\View\FactoryView.xaml.cs">
+      <DependentUpon>FactoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Production\View\CostConverter.cs" />
+    <Compile Include="Production\View\ImageConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Production\UserProduction.cs" />
     <Compile Include="Rec\UserRec.cs" />
@@ -150,7 +158,16 @@
   <ItemGroup>
     <Resource Include="icons\house58.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Production\View\MyFactoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Production\View\FactoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

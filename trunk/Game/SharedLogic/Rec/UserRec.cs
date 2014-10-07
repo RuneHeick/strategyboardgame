@@ -154,6 +154,18 @@ namespace Logic
                 case "houses":
                     uri = "/SharedLogic;component/icons/house58.png";
                     break;
+                case "worker":
+                    uri = "/SharedLogic;component/icons/group58.png";
+                    break;
+                case "attack":
+                    uri = "/SharedLogic;component/icons/cross9.png";
+                    break;
+                case "defence":
+                    uri = "/SharedLogic;component/icons/shield54.png";
+                    break;
+                case "soilder":
+                    uri = "/SharedLogic;component/icons/warrior.png";
+                    break;
                     
                 default: 
                     return null; 

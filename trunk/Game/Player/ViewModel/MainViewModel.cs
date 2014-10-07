@@ -40,6 +40,7 @@ namespace Player.ViewModel
             PlayerData.Instance.Client.OnDisconnect += Client_OnDisconnect;
             Tabs.Add(new MainTab());
             Tabs.Add(new BuildingsTab());
+            Tabs.Add(new MyBuildingsTab());
             Rec = new UserRec(PlayerData.Instance.Client.dataManager); 
         }
 

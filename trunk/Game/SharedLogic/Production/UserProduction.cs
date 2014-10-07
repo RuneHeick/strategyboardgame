@@ -32,7 +32,10 @@ namespace SharedLogic
             {
                 lock (Factories)
                 {
-                    Factories.Add(b);
+                    if (arg3 == ChangeType.Added)
+                        Factories.Add(b);
+                    else if (arg3 == ChangeType.Removed)
+                        Factories.Remove(b);
                 }
             }
         }
@@ -72,7 +75,6 @@ namespace SharedLogic
                 var building = Factories.FirstOrDefault((o)=>o.Id == Id); 
                 if(building != null)
                 {
-                    Factories.Remove(building);
                     manager.Remove(building); 
                 }
             }
