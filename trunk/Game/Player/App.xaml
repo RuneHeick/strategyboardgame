@@ -40,5 +40,9 @@
             <tv:WarView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type tvm:ResearchTab}">
+            <tv:ResearchTabView />
+        </DataTemplate>
+
     </Application.Resources>
 </Application>
