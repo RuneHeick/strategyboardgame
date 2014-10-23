@@ -42,7 +42,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <TabControl Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding Tabs}">
+        <TabControl Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding Tabs}" SelectedValue="{Binding CurrentTab}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" />

@@ -32,7 +32,9 @@ namespace Player.ViewModel
             }
         }
 
-        private UserRec Rec; 
+        private UserRec Rec;
+
+        public TabBase CurrentTab { get; set;  }
 
         public MainViewModel()
         {
@@ -40,7 +42,9 @@ namespace Player.ViewModel
             PlayerData.Instance.Client.OnDisconnect += Client_OnDisconnect;
             Tabs.Add(new MainTab());
             Tabs.Add(new BuildingsTab());
-            Tabs.Add(new MyBuildingsTab());
+            var b = new MyBuildingsTab();
+            Tabs.Add(b);
+            Tabs.Add(new WarTab(b));
             Rec = new UserRec(PlayerData.Instance.Client.dataManager); 
         }
 

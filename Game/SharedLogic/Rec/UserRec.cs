@@ -163,8 +163,8 @@ namespace Logic
                 case "defence":
                     uri = "/SharedLogic;component/icons/shield54.png";
                     break;
-                case "soilder":
-                    uri = "/SharedLogic;component/icons/warrior.png";
+                case "soldier":
+                    uri = "/SharedLogic;component/icons/militar.png";
                     break;
                     
                 default: 
