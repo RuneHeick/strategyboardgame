@@ -61,6 +61,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Logic\ArmyLogic.cs" />
     <Compile Include="Logic\ILogic.cs" />
     <Compile Include="Logic\RCLogic.cs" />
     <Compile Include="Logic\ProLogic.cs" />
@@ -112,6 +113,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Buildings\Army Base.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Buildings\Hest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

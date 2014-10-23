@@ -18,7 +18,9 @@ namespace Coordinator.ViewModel
         GameServer Server;
 
         RCLogic RCManager;  
-        ProLogic ProManager; 
+        ProLogic ProManager;
+        ArmyLogic ArmyManager; 
+
         public MainWindowViewModel()
         {
             Server = new GameServer(5050);
@@ -30,7 +32,7 @@ namespace Coordinator.ViewModel
 
             RCManager = new RCLogic();
             ProManager = new ProLogic(RCManager);
-
+            ArmyManager = new ArmyLogic(); 
         }
 
 
@@ -38,6 +40,7 @@ namespace Coordinator.ViewModel
         {
             RCManager.Create(UserName, obj);
             ProManager.Create(UserName, obj);
+            ArmyManager.Create(UserName, obj);
         }
 
 

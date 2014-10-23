@@ -36,5 +36,9 @@
             <tv:MyBuildingTabView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type tvm:WarTab}">
+            <tv:WarView />
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

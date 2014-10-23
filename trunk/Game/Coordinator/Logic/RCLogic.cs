@@ -21,11 +21,14 @@ namespace Coordinator.Logic
             var user = new UserRec(data);
             managers.Add(user);
             
-            user.AddRec("Houses",0);
             user.AddRec("Water",50);
             user.AddRec("Food", 50);
             user.AddRec("Power", 50);
             user.AddRec("Game Point", 50);
+            user.AddRec("Attack", 100);
+            user.AddRec("Defence", 100);
+            user.AddRec("Soldier", 0);
+            user.AddRec("Worker", 0);
         }
 
     }

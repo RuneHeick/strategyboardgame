@@ -1,0 +1,6 @@
+Create
+Give 
+Worker=-1
+Cost
+Power=1
+BuildingFee
