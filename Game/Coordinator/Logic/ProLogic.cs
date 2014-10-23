@@ -102,21 +102,6 @@ namespace Coordinator.Logic
             }
         }
 
-        private void Init(UserProduction pro)
-        {
-            List<BuildingContainor.UseCond> Con = new List<BuildingContainor.UseCond>();
-            Con.Add(new BuildingContainor.UseCond() { Resource = "Water", Quantity = 5 });
-            Con.Add(new BuildingContainor.UseCond() { Resource = "Food", Quantity = 5 });
-            BuildingContainor.UseCond create = new BuildingContainor.UseCond{Resource = "Space", Quantity = 0};
-             BuildingContainor.UseCond bonus = new BuildingContainor.UseCond{Resource = "Space", Quantity = 4};
-             BuildingContainor house = new BuildingContainor("House", "AX5C", Con, create, bonus);
-             house.IsActive = true; 
-             
-            
-             pro.AddFactory(house);
-             AllBuildings.Add(house.Id, house); 
-        }
-
         private void MoveRqChanged(object o, System.ComponentModel.PropertyChangedEventArgs p, UserProduction pro)
         {
             StringContainor MoveRq = o as StringContainor; 

@@ -11,6 +11,8 @@ namespace Player.ViewModel.Tabs
     public class ResearchTab:TabBase
     {
 
+        
+
         public ObservableCollection<ResearchItem> ResearchItems { get; set; }
         public ObservableCollection<ResearchItem> ResearchQueue { get; set; }
         
@@ -22,13 +24,21 @@ namespace Player.ViewModel.Tabs
             ResearchItems = new ObservableCollection<ResearchItem>();
 
             ResearchItems.Add(new ResearchItem("Attack", ""));
+            ResearchItems.Add(new ResearchItem("Defence", ""));
+            ResearchItems.Add(new ResearchItem("Production", ""));
+            ResearchItems.Add(new ResearchItem("Knowlage", ""));
+
             ResearchQueue = new ObservableCollection<ResearchItem>();
             ResearchQueue.Add(new ResearchItem("default", ""));
             ResearchQueue.Add(new ResearchItem("default", ""));
             ResearchQueue.Add(new ResearchItem("default", ""));
             ResearchQueue.Add(new ResearchItem("default", ""));
             ResearchQueue.Add(new ResearchItem("default", ""));
+           
         }
+
+
+
 
 
 

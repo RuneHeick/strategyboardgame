@@ -59,15 +59,6 @@ namespace SharedLogic
             }
         }
 
-        public void AddFactory(string Type, string Id, List<SharedData.Types.BuildingContainor.UseCond> Uses, SharedData.Types.BuildingContainor.UseCond creates, SharedData.Types.BuildingContainor.UseCond Creationbonus )
-        {
-            lock (Factories)
-            {
-                var building = new BuildingContainor(Type, Id, Uses, creates, Creationbonus);
-                manager.Add(building);
-            }
-        }
-
         public void RemoveFactory(string Id)
         {
             lock (Factories)
