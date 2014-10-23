@@ -59,7 +59,7 @@ namespace Coordinator.Logic.Building
 
         private string NextRandom()
         {
-            var chars = "ABCDEFGHJKLMNOPQRSTUVWXYZ123456789";
+            var chars = "ABCDEFGHJKLMNPQRSTVWXYZ123456789";
             var random = new Random();
             var result = new string(
             Enumerable.Repeat(chars, 6)
