@@ -167,8 +167,9 @@ namespace Logic
                     uri = "/SharedLogic;component/icons/militar.png";
                     break;
                     
-                default: 
-                    return null; 
+                default:
+                    uri = "/SharedLogic;component/icons/default image.png";
+                    break;
             }
 
             BitmapImage bi3 = new BitmapImage();

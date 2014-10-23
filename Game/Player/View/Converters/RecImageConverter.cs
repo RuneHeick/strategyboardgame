@@ -14,12 +14,14 @@ namespace Player.View.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            TagIntContainor item = value as TagIntContainor; 
+            TagIntContainor item = value as TagIntContainor;
             if(item != null)
             {
                 return UserRec.GetImage(item.RealName);
             }
-            return null; 
+            if(value is string)
+                return UserRec.GetImage(value as string);
+            return UserRec.GetImage("default");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

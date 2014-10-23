@@ -45,6 +45,7 @@ namespace Player.ViewModel
             var b = new MyBuildingsTab();
             Tabs.Add(b);
             Tabs.Add(new WarTab(b));
+            Tabs.Add(new ResearchTab());
             Rec = new UserRec(PlayerData.Instance.Client.dataManager); 
         }
 

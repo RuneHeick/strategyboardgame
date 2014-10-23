@@ -58,6 +58,7 @@
     <Compile Include="ViewModel\NewBuildingViewModel.cs" />
     <Compile Include="ViewModel\Tabs\BuildingsTab.cs" />
     <Compile Include="ViewModel\Tabs\MyBuildingsTab.cs" />
+    <Compile Include="ViewModel\Tabs\ResearchTab.cs" />
     <Compile Include="ViewModel\Tabs\WarTab.cs" />
     <Compile Include="ViewModel\TurnViewModel.cs" />
     <Compile Include="View\Converters\IntSumValueConverter.cs" />
@@ -73,6 +74,9 @@
     </Compile>
     <Compile Include="View\TabView\MyBuildingTabView.xaml.cs">
       <DependentUpon>MyBuildingTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TabView\ResearchTabView.xaml.cs">
+      <DependentUpon>ResearchTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TabView\WarView.xaml.cs">
       <DependentUpon>WarView.xaml</DependentUpon>
@@ -125,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TabView\MyBuildingTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TabView\ResearchTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

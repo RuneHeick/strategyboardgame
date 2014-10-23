@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="Player.View.TabView.ResearchTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:l="clr-namespace:Player.View.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <UserControl.Resources>
+        <l:RecImageConverter x:Key="recImageConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>    
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <Border BorderThickness="1" BorderBrush="Black" Margin="10" >
+                <Image Height="90" Width="90" AllowDrop="True" Drop="Image_Drop" DragOver="Image_DragOver" DataContext="{Binding ResearchQueue[0]}" Source="{Binding Name, Converter={StaticResource recImageConverter}}"/>
+            </Border>
+
+            <Border BorderThickness="1" BorderBrush="Black" Margin="10" >
+                <Image Height="90" Width="90" AllowDrop="True" Drop="Image_Drop" DragOver="Image_DragOver" DataContext="{Binding ResearchQueue[1]}" Source="{Binding Name, Converter={StaticResource recImageConverter}}"/>
+            </Border>
+
+            <Border BorderThickness="1" BorderBrush="Black" Margin="10" >
+                <Image Height="90" Width="90" AllowDrop="True" Drop="Image_Drop" DragOver="Image_DragOver" DataContext="{Binding ResearchQueue[2]}" Source="{Binding Name, Converter={StaticResource recImageConverter}}"/>
+            </Border>
+
+            <Border BorderThickness="1" BorderBrush="Black" Margin="10" >
+                <Image Height="90" Width="90" AllowDrop="True" Drop="Image_Drop" DragOver="Image_DragOver" DataContext="{Binding ResearchQueue[3]}" Source="{Binding Name, Converter={StaticResource recImageConverter}}"/>
+            </Border>
+
+            <Border BorderThickness="1" BorderBrush="Black" Margin="10" >
+                <Image Height="90" Width="90" AllowDrop="True" Drop="Image_Drop" DragOver="Image_DragOver" DataContext="{Binding ResearchQueue[4]}" Source="{Binding Name, Converter={StaticResource recImageConverter}}"/>
+            </Border>
+
+
+        </StackPanel>
+
+
+        <ItemsControl ItemsSource="{Binding ResearchItems}" Grid.ColumnSpan="3" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="5,0,5,0" MouseMove="StackPanel_MouseMove" >
+                        <Image Height="50" Width="50" Source="{Binding Name, Converter={StaticResource recImageConverter}}"   />
+                        <TextBlock Margin="5,0,5,0" Text="{Binding Name}" VerticalAlignment="Center" />
+                        <StackPanel.ToolTip>
+                            <ToolTip>
+                                <TextBlock Text="{Binding Description}" />
+                            </ToolTip>
+                        </StackPanel.ToolTip>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+    </Grid>
+    
+   
+    
+</UserControl>
