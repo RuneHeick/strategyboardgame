@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedLogic.Production;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,12 +32,13 @@ namespace Player.View.TabView
             {
                 // Package the data.
                 DataObject data = new DataObject();
-                string value = ((sender as StackPanel).DataContext as Player.ViewModel.Tabs.ResearchTab.ResearchItem).Name;
+                string value = ((sender as StackPanel).DataContext as ResearchItem).Name;
 
                 data.SetData("Object", value);
 
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+                 
             }
         }
 
@@ -47,11 +49,12 @@ namespace Player.View.TabView
             {
                 
                 string data = (string)e.Data.GetData("Object");
-                ((sender as Image).DataContext as Player.ViewModel.Tabs.ResearchTab.ResearchItem).Name = data; 
+                ((sender as Image).DataContext as ResearchItem).Name = data; 
                 // Set Effects to notify the drag source what effect 
                 // the drag-and-drop operation had. 
                 // (Copy if CTRL is pressed; otherwise, move.) 
                 e.Effects = DragDropEffects.Move;
+
             }
             e.Handled = true;
         }

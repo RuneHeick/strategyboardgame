@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using SharedData.Types;
 using Logic;
+using SharedLogic.Production;
 
 namespace Coordinator.Logic.Building
 {
@@ -76,7 +77,11 @@ namespace Coordinator.Logic.Building
             {
                 if(Users.Use(item.Cost))
                 {
-                    BuildingContainor building = new BuildingContainor(item.Type,GetRandom(),item.Uses,item.Produses,item.Bonus );
+                    BuildingContainor building; 
+                    if(item.Type.ToLower().Contains("school"))
+                        building = new SchoolContainor(item.Type, GetRandom(), item.Uses, item.Produses, item.Bonus);
+                    else 
+                        building = new BuildingContainor(item.Type,GetRandom(),item.Uses,item.Produses,item.Bonus );
                     building.IsActive = true; 
                     return building; 
                 }

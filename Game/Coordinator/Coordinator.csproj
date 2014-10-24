@@ -116,6 +116,9 @@
     <Content Include="Buildings\Army Base.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Buildings\School.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Buildings\Hest.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
