@@ -168,6 +168,7 @@ namespace SharedData
                     else
                     {
                         DataByName.Add(tempitem.Name, tempitem);
+                        DataByName[tempitem.Name].Update(tempitem);
                         DataByName[tempitem.Name].PropertyChanged += item_PropertyChanged;
                         if (CollectionChanged != null)
                             CollectionChanged(tempitem.Name, tempitem, ChangeType.Added, this); 

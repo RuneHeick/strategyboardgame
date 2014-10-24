@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using SharedLogic.Production;
+using SharedData;
 
 namespace Player.ViewModel.Tabs
 {
@@ -14,7 +16,7 @@ namespace Player.ViewModel.Tabs
         
 
         public ObservableCollection<ResearchItem> ResearchItems { get; set; }
-        public ObservableCollection<ResearchItem> ResearchQueue { get; set; }
+        public ObservableCollection<SchoolContainor> Schools { get; set; }
         
 
 
@@ -28,59 +30,47 @@ namespace Player.ViewModel.Tabs
             ResearchItems.Add(new ResearchItem("Production", ""));
             ResearchItems.Add(new ResearchItem("Knowlage", ""));
 
-            ResearchQueue = new ObservableCollection<ResearchItem>();
-            ResearchQueue.Add(new ResearchItem("default", ""));
-            ResearchQueue.Add(new ResearchItem("default", ""));
-            ResearchQueue.Add(new ResearchItem("default", ""));
-            ResearchQueue.Add(new ResearchItem("default", ""));
-            ResearchQueue.Add(new ResearchItem("default", ""));
+            Schools = new ObservableCollection<SchoolContainor>();
+            PlayerData.Instance.Client.dataManager.CollectionChanged += dataManager_CollectionChanged;
+
+            Init(PlayerData.Instance.Client.dataManager);
+
            
         }
 
-
-
-
-
-
-
-
-
-        public class ResearchItem: INotifyPropertyChanged
+        private void Init(SharedData.DataManager dataManager)
         {
-            public ResearchItem(string name, string description)
+            Schools.Clear();
+            string[] names = dataManager.ItemNames;
+            foreach(string name in names)
             {
-                Name = name;
-                Description = description; 
+                if(name.ToLower().Contains("school"))
+                {
+                    SchoolContainor school = dataManager.GetItem<SchoolContainor>(name);
+                    if (school != null)
+                        dataManager_CollectionChanged(null, school, ChangeType.Added, dataManager); 
+                }                
             }
 
-            private string name; 
-            public string Name
-            {
-                get
-                {
-                    return name; 
-                }
-                set
-                {
-                    name = value;
-                    OnPropertyChanged("Name");
-                }
-            }
-            public string Description { get; set; }
 
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            protected virtual void OnPropertyChanged(string propertyName)
-            {
-                PropertyChangedEventHandler handler = this.PropertyChanged;
-                if (handler != null)
-                {
-                    var e = new PropertyChangedEventArgs(propertyName);
-                    handler(this, e);
-                }
-            }
         }
 
+        void dataManager_CollectionChanged(string arg1, ISharedData arg2, ChangeType arg3, DataManager arg4)
+        {
+            var school = arg2 as SchoolContainor;
+            if (school != null)
+            {
+                if (arg3 == ChangeType.Added)
+                {
+                    Schools.Add(school);
+                }
+                else
+                {
+                    Schools.Remove(school);
+                }
+            }
+
+        }
 
     }
 }

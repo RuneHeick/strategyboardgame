@@ -160,7 +160,7 @@ namespace SharedData.Types
             OnPropertyChanged("Uses");
         }
         
-        public void Update(ISharedData data)
+        public virtual void Update(ISharedData data)
         {
             BuildingContainor con = data as BuildingContainor; 
             if(con != null)

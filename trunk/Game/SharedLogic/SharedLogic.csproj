@@ -48,6 +48,7 @@
     <Compile Include="Production\Building\BuildingLoader.cs" />
     <Compile Include="Production\BuildingContainor.cs" />
     <Compile Include="Production\CreateBuildingRq.cs" />
+    <Compile Include="Production\SchoolContainor.cs" />
     <Compile Include="Production\View\MyFactoryView.xaml.cs">
       <DependentUpon>MyFactoryView.xaml</DependentUpon>
     </Compile>
