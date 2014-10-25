@@ -65,6 +65,7 @@
     <Compile Include="Logic\ILogic.cs" />
     <Compile Include="Logic\RCLogic.cs" />
     <Compile Include="Logic\ProLogic.cs" />
+    <Compile Include="Logic\ResearchLogic.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

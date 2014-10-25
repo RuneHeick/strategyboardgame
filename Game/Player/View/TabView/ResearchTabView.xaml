@@ -74,13 +74,11 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="5,0,5,0" MouseMove="StackPanel_MouseMove" >
-                        <Image Height="50" Width="50" Source="{Binding Name, Converter={StaticResource recImageConverter}}"   />
-                        <TextBlock Margin="5,0,5,0" Text="{Binding Name}" VerticalAlignment="Center" />
-                        <StackPanel.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="{Binding Description}" />
-                            </ToolTip>
-                        </StackPanel.ToolTip>
+                        <Image Height="50" Width="50" Source="{Binding RealName, Converter={StaticResource recImageConverter}}"   />
+                        <StackPanel Margin="5,0,5,0">
+                            <TextBlock Text="{Binding RealName}" VerticalAlignment="Center" FontSize="15" />
+                            <TextBlock Text="{Binding Value}" VerticalAlignment="Center" FontSize="10" />
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

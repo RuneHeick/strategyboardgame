@@ -172,6 +172,13 @@ namespace Logic
                 case "knowlage":
                     uri = "/SharedLogic;component/icons/robot3.png";
                     break;
+                case "military":
+                    uri = "/SharedLogic;component/icons/army4.png";
+                    break;
+                case "buildings":
+                    uri = "/SharedLogic;component/icons/factory12.png";
+                    break;
+                    
                 default:
                     uri = "/SharedLogic;component/icons/default image.png";
                     break;
