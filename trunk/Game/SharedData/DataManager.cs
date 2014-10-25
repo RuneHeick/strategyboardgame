@@ -34,7 +34,8 @@ namespace SharedData
                 {
                     try
                     {
-                        return (T)item;
+                        if(item is T)
+                            return (T)item;
                     }
                     catch
                     {

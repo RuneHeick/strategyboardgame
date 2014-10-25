@@ -1,4 +1,5 @@
-﻿using SharedLogic.Production;
+﻿using SharedData.Types;
+using SharedLogic.Production;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Player.View.TabView
             {
                 // Package the data.
                 DataObject data = new DataObject();
-                string value = ((sender as StackPanel).DataContext as ResearchItem).Name;
+                string value = ((sender as StackPanel).DataContext as DoubleTagContainor).RealName;
 
                 data.SetData("Object", value);
 

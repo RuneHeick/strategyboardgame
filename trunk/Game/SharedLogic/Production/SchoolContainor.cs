@@ -34,20 +34,42 @@ namespace SharedLogic.Production
             OnPropertyChanged("ResearchQueue");
         }
 
-        public override void Update(ISharedData data)
+        public ResearchItem DoResearch()
         {
-            base.Update(data);
-            SchoolContainor school = data as SchoolContainor; 
-            if(data != null)
+            lock (ResearchQueue)
             {
-                for(int i = 0; i<school.ResearchQueue.Count; i++)
+                ResearchItem ret = new ResearchItem(ResearchQueue[0].Name, ResearchQueue[0].Description);
+                for (int i = 0; i < 4; i++)
                 {
                     ResearchQueue[i].Updated -= SchoolContainor_PropertyChanged;
-                    ResearchQueue[i].Name = school.ResearchQueue[i].Name;
-                    ResearchQueue[i].Description = school.ResearchQueue[i].Description;
+                    ResearchQueue[i].Name = ResearchQueue[i + 1].Name;
+                    ResearchQueue[i].Description = ResearchQueue[i + 1].Description;
                     ResearchQueue[i].Updated += SchoolContainor_PropertyChanged;
                 }
+                ResearchQueue[4].Name = "None";
+                ResearchQueue[4].Description = "None";
+                SchoolContainor_PropertyChanged();
+                return ret;
+            }
+        }
 
+        public override void Update(ISharedData data)
+        {
+            lock (ResearchQueue)
+            {
+                base.Update(data);
+                SchoolContainor school = data as SchoolContainor;
+                if (data != null)
+                {
+                    for (int i = 0; i < school.ResearchQueue.Count; i++)
+                    {
+                        ResearchQueue[i].Updated -= SchoolContainor_PropertyChanged;
+                        ResearchQueue[i].Name = school.ResearchQueue[i].Name;
+                        ResearchQueue[i].Description = school.ResearchQueue[i].Description;
+                        ResearchQueue[i].Updated += SchoolContainor_PropertyChanged;
+                    }
+
+                }
             }
         }
 
