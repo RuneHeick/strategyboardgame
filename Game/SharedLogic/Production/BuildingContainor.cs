@@ -92,7 +92,7 @@ namespace SharedData.Types
             }
         }
         
-        public void Production(UserRec rec)
+        public void Production(UserRec rec, int Bonus)
         {
             lock (Uses)
             {
@@ -130,8 +130,8 @@ namespace SharedData.Types
 
                     if (rec.Use(Recdem))
                     {
-                        if (ProductionType!= null)
-                            rec.Increase(ProductionType.Resource, ProductionType.Quantity);
+                        if (ProductionType != null && ProductionType.Quantity>0)
+                            rec.Increase(ProductionType.Resource, ProductionType.Quantity+Bonus);
                     }
                     else
                     {

@@ -30,10 +30,11 @@ namespace Coordinator.ViewModel
             RC.OnDataManagerAdded += RC_OnDataManagerAdded;
             Server.OnClientLogin += Server_OnClientLogin;
 
-            RCManager = new RCLogic();
-            ProManager = new ProLogic(RCManager);
+            ResearchManager = new ResearchLogic();
+            RCManager = new RCLogic(ResearchManager);
+            ProManager = new ProLogic(RCManager, ResearchManager);
             ArmyManager = new ArmyLogic();
-            ResearchManager = new ResearchLogic(); 
+            
         }
 
 
