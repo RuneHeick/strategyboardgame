@@ -24,6 +24,7 @@ namespace Coordinator.Logic
         RCLogic recManager;
 
         DispatcherTimer ProductionTimer;
+        private ResearchLogic ResearchManager;
 
         public TimeSpan UpdateInterval
         {
@@ -37,9 +38,9 @@ namespace Coordinator.Logic
             }
         }
 
-        public ProLogic(RCLogic RecManager)
+        public ProLogic(RCLogic RecManager, ResearchLogic ResearchManager)
         {
-            BuildingManager = new Building.BuildingLoader("Buildings"); 
+            BuildingManager = new Building.BuildingLoader("Buildings");
             UserBuildings = new ObservableCollection<UserProduction>();
             recManager = RecManager;
 
@@ -47,6 +48,7 @@ namespace Coordinator.Logic
             ProductionTimer.Tick += new EventHandler(timer_Tick);
             ProductionTimer.Interval = new TimeSpan(0, 0, 0, 5, 0);
             ProductionTimer.Start(); 
+            this.ResearchManager = ResearchManager;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -55,7 +57,8 @@ namespace Coordinator.Logic
             {
                 foreach(UserProduction up in UserBuildings)
                 {
-                    up.DoProduction();
+                    var Bonus = ResearchManager.GetResearchStats("Production", up.rec.manager);
+                    up.DoProduction(Bonus != null ? (int)Bonus.Value/5: 0 );
                 }
             }
         }

@@ -71,13 +71,13 @@ namespace SharedLogic
             }
         }
 
-        public void DoProduction()
+        public void DoProduction(int Bonus)
         {
             lock(Factories)
             {
                 foreach(BuildingContainor b in Factories)
                 {
-                    b.Production(rec);
+                    b.Production(rec, Bonus);
                 }
             }
         }

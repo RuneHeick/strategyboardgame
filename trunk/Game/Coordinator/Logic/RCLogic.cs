@@ -15,6 +15,25 @@ namespace Coordinator.Logic
     public class RCLogic : ILogic
     {
         public List<UserRec> managers = new List<UserRec>();
+        private ResearchLogic researchManager;
+
+        public RCLogic(ResearchLogic ResearchManager)
+        {
+            // TODO: Complete member initialization
+            this.researchManager = ResearchManager;
+
+            researchManager.AddUpdate(ResearchComplete, "Attack");
+            researchManager.AddUpdate(ResearchComplete, "Defence");
+        }
+
+        private void ResearchComplete(string name, DataManager manager )
+        {
+            UserRec rec = managers.FirstOrDefault((o)=> o.manager == manager);
+            if(rec != null)
+            {
+                rec.Increase(name, 5);
+            }
+        }
 
         public void Create(string name, DataManager data)
         {
