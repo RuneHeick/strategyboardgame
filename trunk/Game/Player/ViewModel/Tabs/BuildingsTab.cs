@@ -14,16 +14,21 @@ namespace Player.ViewModel.Tabs
 {
     public class BuildingsTab:TabBase
     {
-        List<BuildingInfo> buildings = null; 
+        
 
         public BuildingsTab()
         {
-            Name = "Building shop";
+            Name = "Shop";
             BuildingInfoContainor b = PlayerData.Instance.Client.dataManager.GetItem<BuildingInfoContainor>("Buildings");
             if(b != null)
             {
-                buildings = b.Buildings; 
+                b.PropertyChanged += b_PropertyChanged;
             }
+        }
+
+        void b_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged("Buildings");
         }
 
         public BuildingInfo SelctedBuilding { get; set; }
@@ -32,7 +37,12 @@ namespace Player.ViewModel.Tabs
         {
             get
             {
-                return buildings; 
+                BuildingInfoContainor b = PlayerData.Instance.Client.dataManager.GetItem<BuildingInfoContainor>("Buildings");
+                if (b != null)
+                {
+                    return b.Buildings;
+                }
+                return null; 
             }
         }
 

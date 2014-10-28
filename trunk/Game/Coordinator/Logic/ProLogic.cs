@@ -13,6 +13,7 @@ using SharedLogic;
 using System.Windows.Threading;
 using System.Windows;
 using SharedLogic.Production;
+using Coordinator.Logic.Building;
 
 namespace Coordinator.Logic
 {
@@ -25,6 +26,8 @@ namespace Coordinator.Logic
 
         DispatcherTimer ProductionTimer;
         private ResearchLogic ResearchManager;
+        private int MaxBuildingLevel { get; set; }
+
 
         public TimeSpan UpdateInterval
         {
@@ -38,6 +41,8 @@ namespace Coordinator.Logic
             }
         }
 
+
+
         public ProLogic(RCLogic RecManager, ResearchLogic ResearchManager)
         {
             BuildingManager = new Building.BuildingLoader("Buildings");
@@ -49,6 +54,17 @@ namespace Coordinator.Logic
             ProductionTimer.Interval = new TimeSpan(0, 0, 0, 5, 0);
             ProductionTimer.Start(); 
             this.ResearchManager = ResearchManager;
+            ResearchManager.AddUpdate(BuildingsLevelChanged, "Buildings");
+
+            // find max level 
+            var dummy = new BuildingInfoContainor("Buildings", int.MaxValue);
+            MaxBuildingLevel = 0; 
+            foreach(BuildingInfo b in dummy.Buildings)
+            {
+                if (b.Level > MaxBuildingLevel)
+                    MaxBuildingLevel = (int)b.Level; 
+            }
+
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -75,7 +91,13 @@ namespace Coordinator.Logic
             pro.Factories.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((sender, e) =>Factories_CollectionChanged(sender,e,pro));
             StringContainor MoveRq = new StringContainor("BuildingMove");
             data.Add(MoveRq);
-            data.Add(new BuildingInfoContainor("Buildings"));
+
+
+            var levelContaionor = ResearchManager.GetResearchStats("Buildings", data);
+            int level = 0;
+            if (levelContaionor != null)
+                level = (int)levelContaionor.Value; 
+            data.Add(new BuildingInfoContainor("Buildings",level));
             MoveRq.Value = ""; 
 
             MoveRq.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler((o,p)=> MoveRqChanged(o,p,pro));
@@ -163,6 +185,25 @@ namespace Coordinator.Logic
         }
 
 
+        private void BuildingsLevelChanged(string name, DataManager manager)
+        {
+            var levelContaionor = ResearchManager.GetResearchStats(name, manager);
+
+            if (levelContaionor != null)
+            {
+                if (levelContaionor.Value >= MaxBuildingLevel)
+                {
+                    manager.Remove(levelContaionor);
+                }
+
+                var item = manager.GetItem<BuildingInfoContainor>("Buildings");
+                if (item != null)
+                    item.SetLevel((int)levelContaionor.Value); 
+
+            }
+
+
+        }
   
     }
 }

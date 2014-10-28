@@ -11,6 +11,7 @@ namespace SharedData
     {
         Dictionary<string, ISharedData> DataByName = new Dictionary<string, ISharedData>();
         UpdateQueue PendingNetworkUpdate = new UpdateQueue();
+        UpdateQueue PendingNetworkAdded = new UpdateQueue();
 
         bool hasUpdates = false;
 
@@ -55,13 +56,32 @@ namespace SharedData
                 {
                     return false;
                 }
-
+                PendingNetworkAdded.Enqueue(item);
                 DataByName.Add(item.Name, item);
                 item.PropertyChanged += item_PropertyChanged;
-                item_PropertyChanged(item, null);
                 if (CollectionChanged != null)
                     CollectionChanged(item.Name, item, ChangeType.Added, this); 
                 return true;
+            }
+        }
+
+        public byte[] GetAddedItem()
+        {
+            lock (PendingNetworkAdded)
+            {
+                TypeList item = new TypeList();
+                ISharedData data = PendingNetworkAdded.Dequeue();
+                while (data != null)
+                {
+                    item.items.Add(data);
+                    data = PendingNetworkAdded.Dequeue();
+                }
+
+                if (item.items.Count > 0)
+                {
+                    return item.getByte();
+                }
+                return null;
             }
         }
 
@@ -72,9 +92,7 @@ namespace SharedData
                 if (DataByName.ContainsKey(item.Name))
                 {
                     item.PropertyChanged -= item_PropertyChanged;
-                    if (ItemRemoved != null)
-                        ItemRemoved(item);
-
+                    
                     DataByName.Remove(item.Name);
 
                     if (CollectionChanged != null)
@@ -152,7 +170,7 @@ namespace SharedData
             }
         }
 
-        public void UpdateFromNetwork(byte[] data)
+        public void UpdateFromNetwork(byte[] data, bool CreateIfNone)
         {
             try
             {
@@ -166,7 +184,7 @@ namespace SharedData
                         DataByName[tempitem.Name].Update(tempitem);
                         DataByName[tempitem.Name].PropertyChanged += item_PropertyChanged; 
                     }
-                    else
+                    else if (CreateIfNone)
                     {
                         DataByName.Add(tempitem.Name, tempitem);
                         DataByName[tempitem.Name].Update(tempitem);
@@ -182,7 +200,6 @@ namespace SharedData
         }
 
         public event Action<byte[]> Updates;
-        public event Action<ISharedData> ItemRemoved; 
 
         public event Action<string,ISharedData, ChangeType, DataManager> CollectionChanged;
 

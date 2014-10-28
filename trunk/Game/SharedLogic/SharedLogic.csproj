@@ -61,6 +61,7 @@
     <Compile Include="Production\UserProduction.cs" />
     <Compile Include="Rec\UserRec.cs" />
     <Compile Include="Rec\RecDemand.cs" />
+    <Compile Include="Turn\TurnTokenContainor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharedData\SharedData.csproj">

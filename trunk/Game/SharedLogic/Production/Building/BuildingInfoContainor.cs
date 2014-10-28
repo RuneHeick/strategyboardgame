@@ -17,29 +17,38 @@ namespace SharedLogic.Production
     {
         public string Name { get; set; }
 
-        public List<BuildingInfo> Buildings {get; private set;} 
+        public List<BuildingInfo> Buildings {get; private set;}
 
-        public BuildingInfoContainor(string path)
+
+        public BuildingInfoContainor(string path, int level = 0)
         {
             Name = "Buildings";
             Buildings = new List<BuildingInfo>();
             BuildingFolder = new DirectoryInfo(path);
+            SetLevel(level); 
+        }
 
+        public void SetLevel(int level)
+        {
+            Buildings.Clear(); 
             FileInfo[] Files = BuildingFolder.GetFiles();
             foreach (FileInfo f in Files)
             {
                 var b = new BuildingInfo();
                 b.Load(f.FullName);
-                Buildings.Add(b);
+                if(b.Level <= level)
+                    Buildings.Add(b);
             }
+            OnPropertyChanged("Buildings");
         }
         
         public void Update(ISharedData data)
         {
-            CreateBuildingRq con = data as CreateBuildingRq; 
+            BuildingInfoContainor con = data as BuildingInfoContainor; 
             if(con != null)
             {
-                
+                Buildings = con.Buildings;
+                OnPropertyChanged("Buildings");
             }
         }
 

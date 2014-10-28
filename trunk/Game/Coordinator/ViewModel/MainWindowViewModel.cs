@@ -37,7 +37,6 @@ namespace Coordinator.ViewModel
             
         }
 
-
         void RC_OnDataManagerAdded(string UserName, SharedData.DataManager obj)
         {
             RCManager.Create(UserName, obj);
@@ -45,7 +44,6 @@ namespace Coordinator.ViewModel
             ArmyManager.Create(UserName, obj);
             ResearchManager.Create(UserName, obj); 
         }
-
 
         private void Server_OnClientLogin(AcceptedArg obj)
         {

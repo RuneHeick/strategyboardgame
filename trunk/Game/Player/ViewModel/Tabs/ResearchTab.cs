@@ -86,6 +86,8 @@ namespace Player.ViewModel.Tabs
                 }
             }
 
+            Visible = Schools.Count > 0 ? true : false; 
+
         }
 
     }

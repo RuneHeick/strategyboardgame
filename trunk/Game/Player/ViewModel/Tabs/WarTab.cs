@@ -102,12 +102,14 @@ namespace Player.ViewModel.Tabs
 
         public WarTab(MyBuildingsTab mybuildings)
         {
+            Visible = false; 
             buildings = mybuildings.Buildings; 
             Name = "Army";
             ArmyBases = new ObservableCollection<BuildingContainor>();
             buildings.CollectionChanged += buildings_CollectionChanged;
             Init();
             PlayerData.Instance.Client.dataManager.CollectionChanged += dataManager_CollectionChanged;
+            buildings_CollectionChanged(null, null); 
         }
 
         void buildings_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -118,6 +120,8 @@ namespace Player.ViewModel.Tabs
                 if (b.Type.ToLower().Contains("army"))
                     ArmyBases.Add(b); 
             }
+
+            Visible = ArmyBases.Count > 0 ? true : false; 
         }
 
         private void Init()

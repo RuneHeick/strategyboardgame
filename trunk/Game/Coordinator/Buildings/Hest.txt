@@ -6,3 +6,5 @@ BuildingFee
 Power=5
 Food=1
 Water=1
+Level 
+Level=1

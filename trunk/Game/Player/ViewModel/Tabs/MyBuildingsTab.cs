@@ -16,7 +16,8 @@ namespace Player.ViewModel.Tabs
 
         public MyBuildingsTab()
         {
-            Name = "Building";
+            Visible = false; 
+            Name = "Buildings";
             Buildings = new ObservableCollection<BuildingContainor>();
             Buildings.CollectionChanged += Buildings_CollectionChanged;
             Init();
@@ -32,6 +33,8 @@ namespace Player.ViewModel.Tabs
                     PlayerData.Instance.SwitchView(new NewBuildingViewModel(a));
                 }
             }
+
+            Visible = Buildings.Count > 0 ? true : false; 
         }
 
         private void Init()
