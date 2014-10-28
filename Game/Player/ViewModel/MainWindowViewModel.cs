@@ -29,7 +29,7 @@ namespace Player.ViewModel
 
         public MainWindowViewModel()
         {
-            PlayerData.Instance.SwitchViewFunction = AddOnStack; 
+            PlayerData.Instance.SwitchViewFunction = AddOnStack;
             AddOnStack(new LoginViewModel());
         }
 

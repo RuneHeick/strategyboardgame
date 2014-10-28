@@ -59,7 +59,7 @@ namespace Network.Server
                     OnClientConnected(data); 
         }
 
-        private void OnUpdateData(ClientData client, byte[] data)
+        private void OnUpdateData(ClientData client, NetworkCommands eventtype ,byte[] data)
         {
             lock (clients)
             {
@@ -67,7 +67,7 @@ namespace Network.Server
                 {
                     if(c.dataManager == client.dataManager && c != client)
                     {
-                        c.Send(NetworkCommands.Data, data); 
+                        c.Send(eventtype, data); 
                     }
                 }
             }
@@ -106,7 +106,7 @@ namespace Network.Server
                         byte[] data = manager.GetAllData();
 
                         if (data != null)
-                            client.Send(NetworkCommands.Data, data);
+                            client.Send(NetworkCommands.Create, data);
                     }
                     else
                     {

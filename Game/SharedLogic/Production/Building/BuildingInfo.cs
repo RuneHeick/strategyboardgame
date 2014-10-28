@@ -22,7 +22,8 @@ namespace Coordinator.Logic.Building
 
         public List<RecDemand> Cost { get; set; }
 
-        
+        public int Level { get; set; }
+
         public void Load(string path)
         {
             string[] data = File.ReadAllLines(new FileInfo(path).FullName);
@@ -56,6 +57,9 @@ namespace Coordinator.Logic.Building
                         case "BuildingFee":
                             Cost.Add(new RecDemand() { Rec = items[0], Quantity = Convert.ToInt32(items[1]) });
                             break;
+                        case "Level":
+                            Level = Convert.ToInt32(items[1]);
+                            break; 
                     }
                 }
             }

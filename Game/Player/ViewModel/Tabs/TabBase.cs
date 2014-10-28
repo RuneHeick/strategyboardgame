@@ -11,5 +11,19 @@ namespace Player.ViewModel.Tabs
     {
         public string Name { get; set; }
 
+        private bool visible = true;
+        public bool Visible 
+        {
+            get
+            {
+                return visible; 
+            }
+            set
+            {
+                visible = value;
+                OnPropertyChanged("Visible");
+            }
+        } 
+
     }
 }

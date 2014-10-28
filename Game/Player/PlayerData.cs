@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using SharedData.Types;
 using Utility.ViewModel;
+using SharedLogic.Turn;
+using Player.ViewModel;
 
 namespace Player
 {
@@ -76,6 +78,12 @@ namespace Player
                     }
                 }
 
+            }
+
+            var turn = item as TurnTokenContainor; 
+            if(turn != null)
+            {
+                SwitchView(new TurnViewModel(turn)); 
             }
 
 

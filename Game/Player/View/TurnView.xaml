@@ -6,6 +6,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width='*' />
+            <ColumnDefinition Width='3*' />
+            <ColumnDefinition Width='*' />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        
+        <StackPanel Grid.Column="1" Grid.Row="1">
+            <Button Height="30" Margin="0,10,0,10" Command="{Binding SelectCommand}" CommandParameter="War">War</Button>
+            <Button Height="30" Margin="0,10,0,10" Command="{Binding SelectCommand}" CommandParameter="RandomResearch">Random Research</Button>
+            <Button Height="30" Margin="0,10,0,10" Command="{Binding SelectCommand}" CommandParameter="RandomResources">Random Resources</Button>
+            <Button Height="30" Margin="0,10,0,10" Command="{Binding SelectCommand}" CommandParameter="RandomBuilding">Random Building</Button>
+            <Button Height="30" Margin="0,10,0,10" Command="{Binding SelectCommand}" CommandParameter="BorderLand" >Border/Land</Button>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

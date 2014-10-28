@@ -14,7 +14,7 @@ namespace Coordinator.Logic
 {
     public class ResearchLogic: ILogic
     {
-        public static string[] ResearchItems = new string[] { "Attack", "Defence", "Knowlage", "Military", "Buildings", "Production" };
+        public static string[] ResearchItems = new string[] { "Attack", "Defence", "Knowlage", "Buildings", "Production" };
 
 
         DispatcherTimer timer = new DispatcherTimer(); 
@@ -43,7 +43,7 @@ namespace Coordinator.Logic
         public void Create(string Name, DataManager data)
         {
             lock (Profiles)
-                Profiles.Add(new ResearchProfil(data)); 
+                Profiles.Add(new ResearchProfil(data));
         }
 
         public void AddUpdate(Action<string, DataManager> handle, string item)
