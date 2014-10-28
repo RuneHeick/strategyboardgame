@@ -9,18 +9,25 @@ using Network;
 using System.Windows.Media;
 using Coordinator.Logic;
 using Logic;
+using Utility.ViewModel;
+using System.Collections.ObjectModel; 
 
 namespace Coordinator.ViewModel
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
 
-        GameServer Server;
+        public GameServer Server;
 
-        RCLogic RCManager;  
-        ProLogic ProManager;
-        ArmyLogic ArmyManager;
-        ResearchLogic ResearchManager; 
+        public RCLogic RCManager { get; set; }
+        public ProLogic ProManager { get; set; }
+        public ArmyLogic ArmyManager { get; set; }
+        public ResearchLogic ResearchManager { get; set; }
+
+
+
+        ObservableCollection<ViewModelBase> Views = new ObservableCollection<ViewModelBase>(); 
+
         public MainWindowViewModel()
         {
             Server = new GameServer(5050);
@@ -34,6 +41,12 @@ namespace Coordinator.ViewModel
             RCManager = new RCLogic(ResearchManager);
             ProManager = new ProLogic(RCManager, ResearchManager);
             ArmyManager = new ArmyLogic();
+
+
+
+            // Views 
+
+            Views.Add(new TurnViewModel(this)); 
             
         }
 

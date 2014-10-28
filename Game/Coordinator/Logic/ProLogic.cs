@@ -17,7 +17,7 @@ using Coordinator.Logic.Building;
 
 namespace Coordinator.Logic
 {
-    class ProLogic:ILogic
+    public class ProLogic:ILogic
     {
         Dictionary<string, BuildingContainor> AllBuildings = new Dictionary<string, BuildingContainor>();
         public Building.BuildingLoader BuildingManager { get; private set;  }

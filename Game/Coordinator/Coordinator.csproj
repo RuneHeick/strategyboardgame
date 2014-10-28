@@ -67,6 +67,7 @@
     <Compile Include="Logic\ProLogic.cs" />
     <Compile Include="Logic\ResearchLogic.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\TurnViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -111,6 +112,10 @@
     <ProjectReference Include="..\SharedLogic\SharedLogic.csproj">
       <Project>{ccac50f3-b4d3-4546-9795-8049dfbee4cd}</Project>
       <Name>SharedLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
+      <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
