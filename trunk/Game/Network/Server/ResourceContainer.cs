@@ -11,6 +11,14 @@ namespace Network.Server
     {
         Dictionary<string, ContainorItem> Items = new Dictionary<string, ContainorItem>();
 
+        public string[] ResourceContainers
+        {
+            get
+            {
+                return Items.Keys.ToArray(); 
+            }
+        }
+
         public DataManager GetDataManager(string Name, string Password)
         {
             if(Items.ContainsKey(Name))

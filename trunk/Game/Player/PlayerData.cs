@@ -80,15 +80,26 @@ namespace Player
 
             }
 
-            var turn = item as TurnTokenContainor; 
-            if(turn != null)
-            {
-                SwitchView(new TurnViewModel(turn)); 
-            }
+                var turn = item as TurnTokenContainor;
+                if (turn != null)
+                {
+                    if (ctype == ChangeType.Added)
+                    {
+                        TurnView = new TurnViewModel(turn);
+                        SwitchView(TurnView);
+                    }
+                    else
+                    {
+                        TurnView.CreateCloseRequest();
+                    }
+                }
+
 
 
         }
 
+
+        TurnViewModel TurnView; 
 
         public static PlayerData Instance
         {
