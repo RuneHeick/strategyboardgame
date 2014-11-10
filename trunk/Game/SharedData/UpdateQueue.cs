@@ -5,11 +5,11 @@ using System.Text;
 
 namespace SharedData
 {
-    class UpdateQueue
+    class UpdateQueue<T>
     {
-        Queue<ISharedData> Queue = new Queue<ISharedData>();
+        Queue<T> Queue = new Queue<T>();
 
-        public void Enqueue(ISharedData item)
+        public void Enqueue(T item)
         {
             if (Queue.Contains(item))
                 return;
@@ -17,13 +17,13 @@ namespace SharedData
                 Queue.Enqueue(item);
         }
 
-        public ISharedData Dequeue()
+        public T Dequeue()
         {
             if(Queue.Count>0)
             {
                 return Queue.Dequeue();
             }
-            return null; 
+            return default(T); 
         }
 
 

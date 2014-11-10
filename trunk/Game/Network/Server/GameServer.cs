@@ -106,7 +106,7 @@ namespace Network.Server
                         byte[] data = manager.GetAllData();
 
                         if (data != null)
-                            client.Send(NetworkCommands.Create, data);
+                            client.Send(NetworkCommands.Data, data);
                     }
                     else
                     {

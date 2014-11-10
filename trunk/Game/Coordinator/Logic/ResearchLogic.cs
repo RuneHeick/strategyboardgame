@@ -18,7 +18,7 @@ namespace Coordinator.Logic
 
 
         DispatcherTimer timer = new DispatcherTimer(); 
-        private ObservableCollection<ResearchProfil> Profiles = new ObservableCollection<ResearchProfil>();
+        public ObservableCollection<ResearchProfil> Profiles = new ObservableCollection<ResearchProfil>();
 
         private Dictionary<string, List<Action<string, DataManager>>> handles = new Dictionary<string, List<Action<string, DataManager>>>(); 
         
@@ -135,7 +135,7 @@ namespace Coordinator.Logic
             return null; 
         }
 
-        private class ResearchProfil
+        public class ResearchProfil
         {
 
             public DataManager Manager { get; set; }

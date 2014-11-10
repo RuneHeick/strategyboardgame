@@ -7,7 +7,9 @@ using Utility.ViewModel;
 using System.Collections.ObjectModel;
 using SharedLogic.Turn;
 using SharedData;
-using System.Windows.Threading; 
+using System.Windows.Threading;
+using Coordinator.ViewModel.SelectedViewModel;
+using System.Threading; 
 
 namespace Coordinator.ViewModel
 {
@@ -58,40 +60,46 @@ namespace Coordinator.ViewModel
         {
             lock (Teams)
                 Teams = mainWindowViewModel.Server.RCContainor.ResourceContainers;
+            mainWindowViewModel.Projection.Teams = Teams;
             OnPropertyChanged("Teams");
 
             if (t == null)
             {
                 t = new DispatcherTimer();
                 t.Tick += (o, s) => Next();
-                t.Interval = new TimeSpan(0, 0, 15);
+                t.Interval = new TimeSpan(0, 0, 5);
                 t.Start();
             }
             
         }
 
         DispatcherTimer t = null;
- 
+
         public void Next()
         {
             t.Stop();
-            t.Start(); 
-                
-                if (CurrentToken != null)
-                {
-                    var man= mainWindowViewModel.Server.RCContainor[CurrentTeam];
-                    CurrentToken.PropertyChanged -= item_PropertyChanged;
-                    man.Remove(CurrentToken);
-                }
+            if (CurrentToken != null)
+            {
+                var man = mainWindowViewModel.Server.RCContainor[CurrentTeam];
+                CurrentToken.PropertyChanged -= item_PropertyChanged;
+                man.Remove(CurrentToken);
+            }
 
+            while (true)
+            {
                 CurrentIndex++;
                 var manager = mainWindowViewModel.Server.RCContainor[CurrentTeam];
+                if (mainWindowViewModel.Server.Cliens.FirstOrDefault((o) => o.dataManager == manager) != null)
+                {
+                    TurnTokenContainor item = new TurnTokenContainor();
+                    CurrentToken = item;
+                    CurrentToken.PropertyChanged += item_PropertyChanged;
 
-                TurnTokenContainor item = new TurnTokenContainor();
-                CurrentToken = item;
-                CurrentToken.PropertyChanged += item_PropertyChanged;
-
-                manager.Add(item); 
+                    manager.Add(item);
+                    mainWindowViewModel.Projection.CurrentTeam = CurrentTeam;
+                    break;
+                }
+            }
         }
 
         void item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -103,14 +111,44 @@ namespace Coordinator.ViewModel
             if(item != null)
             {
                 DoTurnData(manager, item);
+                
             }
 
-            Next(); 
+            t.Start(); 
         }
 
         private void DoTurnData(DataManager manager, TurnTokenContainor item)
         {
-            
+            SelectedBase selected = null; 
+            switch(item.SelectedAction)
+            {
+                case TurnTokenContainor.TurnAction.BorderLand:
+                    selected = new Border(); 
+                    break;
+
+                case TurnTokenContainor.TurnAction.RandomBuilding:
+                    selected = new SelectedViewModel.Building(); 
+                    break;
+
+                case TurnTokenContainor.TurnAction.RandomResearch:
+                    selected = new SelectedViewModel.Research(); 
+                    break;
+
+                case TurnTokenContainor.TurnAction.RandomResources:
+                    selected = new SelectedViewModel.Resources(); 
+                    break;
+
+                case TurnTokenContainor.TurnAction.War:
+                    selected = new SelectedViewModel.War(); 
+                    break;
+            }
+
+            if(selected != null)
+            {
+                selected.DoAction(manager, mainWindowViewModel);
+                mainWindowViewModel.Projection.SelectedView = selected;
+            }
+
         }
 
          

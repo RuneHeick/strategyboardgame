@@ -13,10 +13,18 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.ColumnSpan="2" Text="{Binding Name, FallbackValue=Team}" FontSize="25" HorizontalAlignment="Center"/>
-        <ContentControl Grid.Column="1" Content="{Binding Item}" />
-        
-        <oxy:Plot Grid.Row="2" Grid.ColumnSpan="2" Model="{Binding Model}" />
+        <TextBlock Grid.ColumnSpan="2" Text="{Binding CurrentTeam, FallbackValue=Team}" FontSize="40" HorizontalAlignment="Center"/>
+        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SelectedView}" />
+        <ItemsControl  Grid.RowSpan="2" ItemsSource="{Binding Teams, Mode=OneWay}" >
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Height="60" Margin="5" Background="Green" >
+                        <TextBlock Text="{Binding Mode=OneWay}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <oxy:Plot Grid.Row="3" Grid.ColumnSpan="2" Model="{Binding Model}" />
         
     </Grid>
 </Window>

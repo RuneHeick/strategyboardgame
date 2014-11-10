@@ -63,6 +63,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\ProjectionViewModel.cs" />
+    <Compile Include="ViewModel\SelectedViewModel\Border.cs" />
+    <Compile Include="ViewModel\SelectedViewModel\Building.cs" />
+    <Compile Include="ViewModel\SelectedViewModel\Research.cs" />
+    <Compile Include="ViewModel\SelectedViewModel\Resources.cs" />
+    <Compile Include="ViewModel\SelectedViewModel\SelectedBase.cs" />
+    <Compile Include="ViewModel\SelectedViewModel\War.cs" />
     <Compile Include="View\ProjektionView.xaml.cs">
       <DependentUpon>ProjektionView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +164,9 @@
     <Content Include="Buildings\House.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\SelectedView\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
