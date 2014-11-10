@@ -24,7 +24,7 @@ namespace Coordinator.ViewModel
         public ArmyLogic ArmyManager { get; set; }
         public ResearchLogic ResearchManager { get; set; }
 
-
+        public ProjectionViewModel Projection { get; private set; }
 
         ObservableCollection<ViewModelBase> Views = new ObservableCollection<ViewModelBase>(); 
 
@@ -46,8 +46,18 @@ namespace Coordinator.ViewModel
 
             // Views 
 
-            Views.Add(new TurnViewModel(this)); 
-            
+            Views.Add(new TurnViewModel(this));
+
+            Projection = new ProjectionViewModel();
+            View.ProjektionView view = new View.ProjektionView()
+            {
+                DataContext = Projection,
+                Name = "Projection",
+                Height = System.Windows.SystemParameters.PrimaryScreenHeight,
+                Width = System.Windows.SystemParameters.PrimaryScreenWidth
+            };
+            view.Show(); 
+
         }
 
         void RC_OnDataManagerAdded(string UserName, SharedData.DataManager obj)
