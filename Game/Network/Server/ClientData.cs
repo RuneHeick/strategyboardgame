@@ -27,13 +27,11 @@ namespace Network.Server
                 if (dataManager_ != null)
                 {
                     dataManager_.Updates -= OnNewUpdates;
-                    dataManager_.CollectionChanged -= ChangeItemExistence;
                 }
                 dataManager_ = value;
                 if (value != null)
                 {
                     dataManager.Updates += OnNewUpdates;
-                    dataManager_.CollectionChanged += ChangeItemExistence;
                 }
             }
         }
@@ -164,33 +162,15 @@ namespace Network.Server
             Send(NetworkCommands.Data, data); 
         }
 
-        private void ChangeItemExistence(string arg1, ISharedData obj, ChangeType arg3, DataManager manager)
-        {
-            if(arg3 == ChangeType.Removed)
-            {
-                RemoveRQ remove = new RemoveRQ();
-                remove.Name = obj.Name;
-
-                Send(NetworkCommands.Remove, remove.ToByte());
-            }
-            else if(arg3 == ChangeType.Added)
-            {
-                var data = manager.GetAddedItem(); 
-                if(data != null)
-                    Send(NetworkCommands.Create, data); 
-            }
-        }
-
-
         private void HandleEvent(NetworkCommands EventType, byte[] data)
         {
-            if ((EventType == NetworkCommands.Data || EventType == NetworkCommands.Create) && Password != "")
+            if (EventType == NetworkCommands.Data && Password != "")
             {
                 if(dataManager != null)
                 {
                     try
                     {
-                        dataManager.UpdateFromNetwork(data, EventType == NetworkCommands.Create);
+                        dataManager.UpdateFromNetwork(data);
                         if (OnUpdateData != null)
                             OnUpdateData(this, EventType, data);
                     }
@@ -209,19 +189,6 @@ namespace Network.Server
 
                 if (OnRemoteLogIn != null)
                     OnRemoteLogIn(this, login.Create); 
-            }
-            if(EventType == NetworkCommands.Remove)
-            {
-                RemoveRQ remove = new RemoveRQ();
-                remove.fromByte(data);
-
-                ISharedData item = dataManager.GetItem<ISharedData>(remove.Name);
-                if (item != null)
-                {
-                    dataManager.CollectionChanged -= ChangeItemExistence;
-                    dataManager.Remove(item);
-                    dataManager.CollectionChanged += ChangeItemExistence;
-                }
             }
             if(EventType == NetworkCommands.AcceptedLogin)
             {
@@ -258,9 +225,7 @@ namespace Network.Server
     {
         Login = 0,
         Data = 1,
-        Remove = 2,
         AcceptedLogin = 3,
-        Create = 4, 
     }
 
 }

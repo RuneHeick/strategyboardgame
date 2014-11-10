@@ -75,7 +75,8 @@ namespace Coordinator.Logic.Building
             BuildingInfo item = Buildings.FirstOrDefault((o)=>o.Type == Name); 
             if(item != null)
             {
-                if(Users.Use(item.Cost))
+                
+                if(null == Users || Users.Use(item.Cost))
                 {
                     BuildingContainor building; 
                     if(item.Type.ToLower().Contains("school"))

@@ -24,9 +24,11 @@ namespace Coordinator.Logic
         ObservableCollection<UserProduction> UserBuildings;
         RCLogic recManager;
 
+        private const int RESEARCHDIVISION = 5;
+
         DispatcherTimer ProductionTimer;
         private ResearchLogic ResearchManager;
-        private int MaxBuildingLevel { get; set; }
+        public int MaxBuildingLevel { get; set; }
 
 
         public TimeSpan UpdateInterval
@@ -74,10 +76,26 @@ namespace Coordinator.Logic
                 foreach(UserProduction up in UserBuildings)
                 {
                     var Bonus = ResearchManager.GetResearchStats("Production", up.rec.manager);
-                    up.DoProduction(Bonus != null ? (int)Bonus.Value/5: 0 );
+                    up.DoProduction(Bonus != null ? (int)Bonus.Value / RESEARCHDIVISION : 0);
                 }
             }
         }
+
+
+        public void DoProduction(int cycles, DataManager manager)
+        {
+            UserProduction up = UserBuildings.FirstOrDefault((o) => o.rec.manager == manager);
+            if (up != null)
+            {
+                var Bonus = ResearchManager.GetResearchStats("Production", up.rec.manager);
+                for(int i = 0; i<cycles; i++)
+                {
+                    up.DoProduction(Bonus != null ? (int)Bonus.Value / RESEARCHDIVISION : 0);
+                }
+            }
+        }
+       
+
 
         public void Create(string name, DataManager data)
         {
