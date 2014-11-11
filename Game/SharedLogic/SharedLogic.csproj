@@ -43,6 +43,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global\UsersList.cs" />
     <Compile Include="Production\Building\BuildingInfo.cs" />
     <Compile Include="Production\Building\BuildingInfoContainor.cs" />
     <Compile Include="Production\Building\BuildingLoader.cs" />
@@ -172,6 +173,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icons\default image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\rectangles8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\airplane61.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="War\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

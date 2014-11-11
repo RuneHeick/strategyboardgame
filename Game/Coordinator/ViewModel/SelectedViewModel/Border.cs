@@ -9,6 +9,14 @@ namespace Coordinator.ViewModel.SelectedViewModel
     public class Border : SelectedBase
     {
 
+
+        public string Image { get; set; }
+
+
+        public Border()
+        {
+            Image = "border"; 
+        }
         public override void DoAction(SharedData.DataManager manager, MainWindowViewModel mainVindow)
         {
             

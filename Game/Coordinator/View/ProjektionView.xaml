@@ -4,7 +4,31 @@
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:mvvm="clr-namespace:Utility.Helper;assembly=Utility"
         xmlns:view="clr-namespace:Coordinator.View"
+        xmlns:sview="clr-namespace:Coordinator.View.SelectedView"
+        xmlns:svm="clr-namespace:Coordinator.ViewModel.SelectedViewModel"
         Title="ProjektionView" Height="500" Width="500">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type svm:Border}">
+            <sview:Border />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:Building}">
+            <sview:Building />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:Research}">
+            <sview:Research />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:Resources}">
+            <sview:Resources />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:War}">
+            <sview:War />
+        </DataTemplate>
+
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -15,9 +39,11 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.ColumnSpan="2" Text="{Binding CurrentTeam, FallbackValue=Team}" FontSize="40" HorizontalAlignment="Center"/>
-        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SelectedView}" />
-        <ItemsControl  Grid.RowSpan="2" ItemsSource="{Binding Teams, Mode=OneWay}" >
+        <TextBlock Grid.ColumnSpan="2" Text="{Binding CurrentTeam, FallbackValue=Team}" FontSize="40" HorizontalAlignment="Center" />
+        <Border Grid.Column="1" Grid.Row="1" BorderThickness="2" BorderBrush="Black" CornerRadius="10" Margin="5">
+            <ContentControl  Content="{Binding SelectedView}" />
+        </Border>
+        <ItemsControl  Grid.RowSpan="2" ItemsSource="{Binding Teams, Mode=OneWay}"  >
             <ItemsControl.Resources>
                 <mvvm:DataContextSpy x:Key="spy" />
                 <view:BackgroundConverter x:Key="BackgroundConverter" />
