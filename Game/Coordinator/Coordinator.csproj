@@ -69,6 +69,7 @@
     <Compile Include="ViewModel\SelectedViewModel\Resources.cs" />
     <Compile Include="ViewModel\SelectedViewModel\SelectedBase.cs" />
     <Compile Include="ViewModel\SelectedViewModel\War.cs" />
+    <Compile Include="View\BackgroundConverter.cs" />
     <Compile Include="View\ProjektionView.xaml.cs">
       <DependentUpon>ProjektionView.xaml</DependentUpon>
     </Compile>

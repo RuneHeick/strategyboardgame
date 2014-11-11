@@ -97,6 +97,7 @@ namespace Coordinator.ViewModel
 
                     manager.Add(item);
                     mainWindowViewModel.Projection.CurrentTeam = CurrentTeam;
+                    mainWindowViewModel.Projection.SelectedView = null;
                     break;
                 }
             }
