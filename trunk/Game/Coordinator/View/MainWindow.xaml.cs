@@ -24,6 +24,8 @@ namespace Coordinator
         {
             InitializeComponent();
             DataContext = new ViewModel.MainWindowViewModel(); 
+
+            
         }
     }
 }
