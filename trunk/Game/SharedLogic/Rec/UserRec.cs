@@ -178,6 +178,13 @@ namespace Logic
                 case "buildings":
                     uri = "/SharedLogic;component/icons/factory12.png";
                     break;
+                case "border":
+                    uri = "/SharedLogic;component/icons/rectangles8.png";
+                    break;
+
+                case "war":
+                    uri = "/SharedLogic;component/icons/airplane61.png";
+                    break;
                     
                 default:
                     uri = "/SharedLogic;component/icons/default image.png";

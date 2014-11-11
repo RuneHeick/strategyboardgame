@@ -10,7 +10,13 @@ namespace Coordinator.ViewModel.SelectedViewModel
     public class Building : SelectedBase
     {
 
+        public string Image { get; set; }
         public string RandomBuilding { get; set; }
+
+        public Building()
+        {
+            Image = "houses";
+        }
 
         public override void DoAction(SharedData.DataManager manager, MainWindowViewModel mainVindow)
         {
