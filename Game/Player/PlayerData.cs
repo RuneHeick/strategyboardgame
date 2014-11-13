@@ -10,6 +10,7 @@ using SharedData.Types;
 using Utility.ViewModel;
 using SharedLogic.Turn;
 using Player.ViewModel;
+using SharedLogic.Global;
 
 namespace Player
 {
@@ -19,6 +20,8 @@ namespace Player
         private static object syncRoot = new Object();
 
         public ObservableCollection<TagIntContainor> Resources { get; private set; }
+
+        public UsersList Users { get; set; }
 
         public GameClient Client { get; set; }
         
@@ -91,6 +94,15 @@ namespace Player
                     else
                     {
                         TurnView.CreateCloseRequest();
+                    }
+                }
+
+                var user = item as UsersList; 
+                if(user != null)
+                {
+                    if(ctype == ChangeType.Added)
+                    {
+                        Users = user; 
                     }
                 }
 

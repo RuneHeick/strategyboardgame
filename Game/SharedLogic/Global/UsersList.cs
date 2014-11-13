@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace SharedLogic.Production
+namespace SharedLogic.Global
 {
     [Serializable]
     public class UsersList:ISharedData
@@ -34,6 +34,36 @@ namespace SharedLogic.Production
             Users = new ObservableCollection<CollectionItem>();
         }
         
+        public void Increase(string Name)
+        {
+            lock (Users)
+            {
+                CollectionItem item = Users.FirstOrDefault((o) => o.Name == Name);
+                if (item != null)
+                {
+                    item.Count++;
+                }
+                else
+                {
+                    Users.Add(new CollectionItem() { Name = Name, Count = 1 });
+                }
+            }
+            OnPropertyChanged("Users");
+        }
+
+        public void Decrease(string Name)
+        {
+            lock (Users)
+            {
+                CollectionItem item = Users.FirstOrDefault((o) => o.Name == Name);
+                if (item != null)
+                {
+                    item.Count--;
+                }
+            }
+            OnPropertyChanged("Users");
+        }
+
         public void Update(ISharedData data)
         {
             UsersList con = data as UsersList; 
@@ -45,7 +75,7 @@ namespace SharedLogic.Production
                     if(target != null)
                     {
                         if(target.Count != item.Count)
-                            item.Count = target.Count; 
+                            target.Count = item.Count; 
                     }
                     else
                     {

@@ -62,6 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\OnlineManagerLogic.cs" />
     <Compile Include="ViewModel\ProjectionViewModel.cs" />
     <Compile Include="ViewModel\SelectedViewModel\Border.cs" />
     <Compile Include="ViewModel\SelectedViewModel\Building.cs" />
