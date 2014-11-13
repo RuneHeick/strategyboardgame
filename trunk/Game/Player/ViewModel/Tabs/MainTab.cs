@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using SharedData.Types;
+using SharedLogic.Global;
 
 namespace Player.ViewModel.Tabs
 {
@@ -15,11 +16,11 @@ namespace Player.ViewModel.Tabs
             Name = "Main";
         }
 
-        public ObservableCollection<TagIntContainor> Rec
+        public ObservableCollection<UsersList.CollectionItem> Rec
         {
             get
             {
-                return PlayerData.Instance.Resources;
+                return PlayerData.Instance.Users.Users;
             }
         }
 
