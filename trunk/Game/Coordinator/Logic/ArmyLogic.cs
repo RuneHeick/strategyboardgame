@@ -181,7 +181,8 @@ namespace Coordinator.Logic
 
                 AttackerArmy.manager.Add(result);
                 DefenterArmy.manager.Add(result);
-
+                AttackerArmy.manager.Remove(war);
+                DefenterArmy.manager.Remove(war); 
             }
 
         }
