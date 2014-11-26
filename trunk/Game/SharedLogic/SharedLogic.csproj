@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global\UsersList.cs" />
+    <Compile Include="Global\WarResultContainor.cs" />
     <Compile Include="Production\Building\BuildingInfo.cs" />
     <Compile Include="Production\Building\BuildingInfoContainor.cs" />
     <Compile Include="Production\Building\BuildingLoader.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Rec\UserRec.cs" />
     <Compile Include="Rec\RecDemand.cs" />
     <Compile Include="Turn\TurnTokenContainor.cs" />
+    <Compile Include="Global\WarContainor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharedData\SharedData.csproj">
@@ -180,9 +182,7 @@
   <ItemGroup>
     <Resource Include="icons\airplane61.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="War\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

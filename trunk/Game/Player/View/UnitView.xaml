@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Player.View.UnitView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:c="clr-namespace:Player.View.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="170" d:DesignWidth="300">
+    <UserControl.Resources>
+        <c:AttackConverter x:Key="AttackConverter" />
+    </UserControl.Resources>
+    <Border BorderThickness="2" BorderBrush="Black" CornerRadius="10" >
+        <StackPanel >
+            <ComboBox FontSize="20" Margin="10,10,10,20" SelectedItem="{Binding Item.Name}" ItemsSource="{Binding Users}" IsEnabled="{Binding IsSelectable}">
+                
+            </ComboBox>
+            <StackPanel IsEnabled="{Binding IsMe}" >
+                <StackPanel Orientation="Horizontal" Margin="10">
+                    <TextBlock Margin="0,0,5,0" Text="{Binding ADLable}"></TextBlock>
+                    <TextBlock Text="{Binding Item.WarSkill}"></TextBlock>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5,0,0,0">Army:</TextBlock>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding Item.Alive}"></TextBlock>
+                </StackPanel>
+                <Slider Margin="5,0,5,0" Value="{Binding Item.Alive}" Minimum="0" Maximum="{Binding MaxSoldier}" Name="Slide">
+                    
+                </Slider>
+                
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

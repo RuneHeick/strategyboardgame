@@ -18,7 +18,7 @@ namespace Coordinator.ViewModel.SelectedViewModel
 
         public override void DoAction(SharedData.DataManager manager, MainWindowViewModel mainVindow)
         {
-            
+            mainVindow.ArmyManager.StartWar(manager); 
         }
     }
 }

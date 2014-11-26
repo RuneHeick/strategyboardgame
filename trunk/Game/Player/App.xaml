@@ -12,6 +12,10 @@
             <v:LoginView />
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type vm:WarViewModel}">
+            <v:WarView />
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type vm:MainViewModel}">
             <v:MainView />
         </DataTemplate>
@@ -43,6 +47,7 @@
         <DataTemplate DataType="{x:Type tvm:ResearchTab}">
             <tv:ResearchTabView />
         </DataTemplate>
+        
 
     </Application.Resources>
 </Application>
