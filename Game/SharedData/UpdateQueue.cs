@@ -5,25 +5,31 @@ using System.Text;
 
 namespace SharedData
 {
-    class UpdateQueue<T>
+    class UpdateQueue
     {
-        Queue<T> Queue = new Queue<T>();
+        Queue<TypeList.ItemUpdate> Queue = new Queue<TypeList.ItemUpdate>();
 
-        public void Enqueue(T item)
+        public void Enqueue(TypeList.ItemUpdate item)
         {
-            if (Queue.Contains(item))
-                return;
-            else
-                Queue.Enqueue(item);
+            lock (Queue)
+            {
+                if (Queue.FirstOrDefault((o) => o.Item == item.Item && item.Change == o.Change) != null)
+                    return;
+                else
+                    Queue.Enqueue(item);
+            }
         }
 
-        public T Dequeue()
+        public TypeList.ItemUpdate Dequeue()
         {
-            if(Queue.Count>0)
+            lock (Queue)
             {
-                return Queue.Dequeue();
+                if (Queue.Count > 0)
+                {
+                    return Queue.Dequeue();
+                }
+                return default(TypeList.ItemUpdate);
             }
-            return default(T); 
         }
 
 

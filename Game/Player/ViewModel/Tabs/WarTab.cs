@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharedData.Types;
 using System.Collections.ObjectModel;
+using SharedLogic.Global;
 
 namespace Player.ViewModel.Tabs
 {
@@ -162,6 +163,16 @@ namespace Player.ViewModel.Tabs
                     Soldier = item;
                 }
             }
+
+            WarContaionor Con = arg2 as WarContaionor;
+            if (Con != null)
+            {
+                if (arg3 == SharedData.ChangeType.Added)
+                {
+                    PlayerData.Instance.SwitchView(new WarViewModel(Con, Soldier.Value));
+                }
+            }
+
         }
 
 

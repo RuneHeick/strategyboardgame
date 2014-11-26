@@ -78,27 +78,30 @@ namespace Coordinator.ViewModel
         public void Next()
         {
             t.Stop();
-            if (CurrentToken != null)
+            if (mainWindowViewModel.Server.Cliens.Count > 0)
             {
-                var man = mainWindowViewModel.Server.RCContainor[CurrentTeam];
-                CurrentToken.PropertyChanged -= item_PropertyChanged;
-                man.Remove(CurrentToken);
-            }
-
-            while (true)
-            {
-                CurrentIndex++;
-                var manager = mainWindowViewModel.Server.RCContainor[CurrentTeam];
-                if (mainWindowViewModel.Server.Cliens.FirstOrDefault((o) => o.dataManager == manager) != null)
+                if (CurrentToken != null)
                 {
-                    TurnTokenContainor item = new TurnTokenContainor();
-                    CurrentToken = item;
-                    CurrentToken.PropertyChanged += item_PropertyChanged;
+                    var man = mainWindowViewModel.Server.RCContainor[CurrentTeam];
+                    CurrentToken.PropertyChanged -= item_PropertyChanged;
+                    man.Remove(CurrentToken);
+                }
 
-                    manager.Add(item);
-                    mainWindowViewModel.Projection.CurrentTeam = CurrentTeam;
-                    mainWindowViewModel.Projection.SelectedView = null;
-                    break;
+                while (true)
+                {
+                    CurrentIndex++;
+                    var manager = mainWindowViewModel.Server.RCContainor[CurrentTeam];
+                    if (mainWindowViewModel.Server.Cliens.FirstOrDefault((o) => o.dataManager == manager) != null)
+                    {
+                        TurnTokenContainor item = new TurnTokenContainor();
+                        CurrentToken = item;
+                        CurrentToken.PropertyChanged += item_PropertyChanged;
+
+                        manager.Add(item);
+                        mainWindowViewModel.Projection.CurrentTeam = CurrentTeam;
+                        mainWindowViewModel.Projection.SelectedView = null;
+                        break;
+                    }
                 }
             }
         }
@@ -112,7 +115,6 @@ namespace Coordinator.ViewModel
             if(item != null)
             {
                 DoTurnData(manager, item);
-                
             }
 
             t.Start(); 

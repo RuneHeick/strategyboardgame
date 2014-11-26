@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
+using SharedLogic.Global;
 
 namespace Coordinator.Logic
 {
@@ -15,7 +16,12 @@ namespace Coordinator.Logic
     {
 
         ObservableCollection<ContainorItem> Armys = new ObservableCollection<ContainorItem>();
-        DispatcherTimer timer = new DispatcherTimer(); 
+        DispatcherTimer timer = new DispatcherTimer();
+
+        ObservableCollection<WarContaionor> Wars = new ObservableCollection<WarContaionor>();
+        Random warSelector = new Random(); 
+        int warCount = 0; 
+
 
         public ArmyLogic()
         {
@@ -52,12 +58,141 @@ namespace Coordinator.Logic
         {
             lock (Armys)
             {
-                Armys.Add(new ContainorItem(data));
+                Armys.Add(new ContainorItem(data, Name));
             }
         }
 
 
+        public void StartWar(DataManager Attacker)
+        {
+            lock (Wars)
+            {
+                var item = Armys.FirstOrDefault((o) => o.manager == Attacker);
+                if (item != null)
+                {
+                    warCount++;
+                    var war = new WarContaionor(warCount);
+                    var warAttacker = new WarContaionor.CollectionItem();
 
+
+                    warAttacker.Name = item.Name;
+                    warAttacker.WarSkill = item.Attack.Value;
+                    warAttacker.Alive = 0;
+
+                    war.Attacker = warAttacker; 
+                    Wars.Add(war);
+
+                    war.PropertyChanged += Attacker_PropertyChanged;
+                    Attacker.Add(war);
+                }
+            }
+
+        }
+
+        void Attacker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            WarContaionor war = sender as WarContaionor; 
+            if(war != null && war.Attacker != null && war.Defender != null)
+            {
+                war.PropertyChanged -= Attacker_PropertyChanged;
+
+                var DefenterArmy = Armys.FirstOrDefault((o) => o.Name == war.Defender.Name);
+                if(DefenterArmy != null)
+                {
+                    var warDefenter = new WarContaionor.CollectionItem();
+                    
+                    warDefenter.WarSkill = DefenterArmy.Defence.Value;
+                    warDefenter.Alive = 0;
+                    warDefenter.Name = DefenterArmy.Name;
+
+                    war.Defender = warDefenter; 
+
+                    DefenterArmy.manager.Add(war);
+                    war.PropertyChanged += Defender_PropertyChanged;
+                }
+                else
+                {
+                    war.PropertyChanged += Attacker_PropertyChanged;
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+
+        void Defender_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            WarContaionor item = sender as WarContaionor;
+            if (item != null && item.Defender.IsDone )
+            {
+                
+                item.PropertyChanged -= Defender_PropertyChanged;
+                DoWar(item);
+            }
+        }
+
+        private void DoWar(WarContaionor war)
+        {
+            var AttackerArmy = Armys.FirstOrDefault((o) => o.Name == war.Attacker.Name);
+            var DefenterArmy = Armys.FirstOrDefault((o) => o.Name == war.Defender.Name);
+            if(AttackerArmy != null && DefenterArmy != null)
+            {
+                AttackerArmy.Soldier.Value -= war.Attacker.Alive;
+                DefenterArmy.Soldier.Value -= war.Defender.Alive;
+
+                List<int> AttackerSoldiers = CreateArmy(war.Attacker.Alive);
+                List<int> DefenderSoldiers = CreateArmy(war.Defender.Alive);
+ 
+                while(AttackerSoldiers.Count >0 && DefenderSoldiers.Count> 0)
+                {
+                    int AHit = warSelector.Next(war.Attacker.WarSkill - 100, war.Attacker.WarSkill);
+                    int BHit = warSelector.Next(war.Defender.WarSkill - 100, war.Defender.WarSkill);
+
+                    AttackerSoldiers[0] -= BHit;
+                    DefenderSoldiers[0] -= AHit;
+
+                    if (AttackerSoldiers[0] < 0)
+                        AttackerSoldiers.RemoveAt(0);
+
+                    if (DefenderSoldiers[0] < 0)
+                        DefenderSoldiers.RemoveAt(0); 
+
+                }
+
+                AttackerArmy.Soldier.Value += AttackerSoldiers.Count;
+                AttackerArmy.Workers.Value += (war.Attacker.Alive - AttackerSoldiers.Count);
+
+                DefenterArmy.Soldier.Value += DefenderSoldiers.Count;
+                DefenterArmy.Workers.Value += (war.Defender.Alive - DefenderSoldiers.Count);
+
+                WarResultContaionor result = new WarResultContaionor(war.ID);
+                if(AttackerSoldiers.Count == 0)
+                {
+                    result.Loser = war.Attacker.Name;
+                    result.Winner = war.Defender.Name;
+                }
+                else
+                {
+                    result.Loser = war.Defender.Name;
+                    result.Winner = war.Attacker.Name;
+                }
+
+                AttackerArmy.manager.Add(result);
+                DefenterArmy.manager.Add(result);
+
+            }
+
+        }
+
+        private List<int> CreateArmy(int i)
+        {
+            List<int> army = new List<int>(i);
+            for (int z = 0; z < i; z++)
+                army.Add(1000);
+            return army; 
+        }
 
 
 
@@ -65,10 +200,12 @@ namespace Coordinator.Logic
         class ContainorItem
         {
 
-            private DataManager manager; 
-         
-            public ContainorItem(DataManager item)
+            public DataManager manager;
+            public string Name { get; private set; }
+
+            public ContainorItem(DataManager item, string Name)
             {
+                this.Name = Name;
                 manager = item; 
                 MaxSize = item.GetItem<IntContainor>("ArmySize");
                 if (MaxSize == null)
@@ -91,6 +228,8 @@ namespace Coordinator.Logic
                 }
 
             }
+
+            
    
             public IntContainor MaxSize { get; private set;  }
 

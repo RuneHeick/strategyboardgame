@@ -135,19 +135,21 @@ namespace Network.Server
             {
                 if (data != null)
                 {
-                    byte[] startIndexer = new byte[] { (byte)commands, (byte)data.Length, (byte)((data.Length >> 8)) };
-                    byte[] Sendbuffer = new byte[startIndexer.Length + data.Length];
-                    Array.Copy(startIndexer, 0, Sendbuffer, 0, startIndexer.Length);
-                    Array.Copy(data, 0, Sendbuffer, startIndexer.Length, data.Length);
-                    NetworkStream stream = handler.GetStream();
-                    stream.WriteAsync(Sendbuffer, 0, Sendbuffer.Length, new System.Threading.CancellationToken());
+                    try
+                    {
+                        byte[] startIndexer = new byte[] { (byte)commands, (byte)data.Length, (byte)((data.Length >> 8)) };
+                        byte[] Sendbuffer = new byte[startIndexer.Length + data.Length];
+                        Array.Copy(startIndexer, 0, Sendbuffer, 0, startIndexer.Length);
+                        Array.Copy(data, 0, Sendbuffer, startIndexer.Length, data.Length);
+                        NetworkStream stream = handler.GetStream();
+                        stream.WriteAsync(Sendbuffer, 0, Sendbuffer.Length, new System.Threading.CancellationToken());
+                    }
+                    catch
+                    {
+                        Disconnected(); 
+                    }
                 }
             }
-            else
-            {
-                Disconnected(); 
-            }
-
         }
 
 
@@ -204,12 +206,16 @@ namespace Network.Server
             
         }
 
+        volatile object DisconnectLock = new object(); 
         void Disconnected()
         {
-            if (OnDisconnect != null)
+            lock (DisconnectLock)
             {
-                OnDisconnect(this);
-                OnDisconnect = null; 
+                if (OnDisconnect != null)
+                {
+                    OnDisconnect(this);
+                    OnDisconnect = null;
+                }
             }
         }
 

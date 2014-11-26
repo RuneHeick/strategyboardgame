@@ -10,7 +10,7 @@ namespace SharedData
     public class DataManager
     {
         Dictionary<string, ISharedData> DataByName = new Dictionary<string, ISharedData>();
-        UpdateQueue<TypeList.ItemUpdate> UpdateItemsData = new UpdateQueue<TypeList.ItemUpdate>(); 
+        UpdateQueue UpdateItemsData = new UpdateQueue(); 
 
         bool hasUpdates = false;
 
