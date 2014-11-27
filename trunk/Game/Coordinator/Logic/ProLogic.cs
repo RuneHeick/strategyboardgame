@@ -150,21 +150,27 @@ namespace Coordinator.Logic
             StringContainor MoveRq = o as StringContainor; 
             if(MoveRq != null)
             {
-                string building = MoveRq.Value;
-                building= building.ToLower(); 
-                MoveRq.Value = "";
+                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => ClaimBuilding(MoveRq, pro)));
+            }
+        }
 
-                lock (UserBuildings)
+        void ClaimBuilding(StringContainor MoveRq, UserProduction pro)
+        {
+            if (MoveRq.Value == "") return;
+            string building = MoveRq.Value;
+            building = building.ToLower();
+            MoveRq.Value = "";
+
+            lock (UserBuildings)
+            {
+                foreach (UserProduction usrpro in UserBuildings)
                 {
-                    foreach(UserProduction usrpro in UserBuildings)
+                    var item = usrpro.Factories.FirstOrDefault((u) => u.Id.ToLower() == building);
+                    if (item != null)
                     {
-                        var item = usrpro.Factories.FirstOrDefault((u) => u.Id.ToLower() == building);
-                        if(item != null)
-                        {
-                            usrpro.RemoveFactory(item.Id);
-                            pro.AddFactory(item);
-                            return;
-                        }
+                        usrpro.RemoveFactory(item.Id);
+                        pro.AddFactory(item);
+                        return;
                     }
                 }
             }
@@ -175,22 +181,27 @@ namespace Coordinator.Logic
             if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
                 var item = e.NewItems[0] as BuildingContainor;
-                pro.GiveBonus(item);
-                item.PropertyChanged += (s,p) => OnActiveChanged(s,p,pro); 
+                if(item.IsActive)
+                    pro.GiveBonus(item);
+                item.PropertyChanged +=  OnActiveChanged; 
             }
             else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
             {
                 var item = e.OldItems[0] as BuildingContainor;
-                pro.RemoveBonus(item);
-                item.PropertyChanged -= (s,p) => OnActiveChanged(s,p,pro);
+                if (item.IsActive)
+                    pro.RemoveBonus(item);
+                item.PropertyChanged -=  OnActiveChanged;
             }
         }
 
-        private void OnActiveChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e, UserProduction pro )
+        private void OnActiveChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var item = sender as BuildingContainor;
+            
             if(e.PropertyName == "IsActive" )
             {
+                UserProduction pro = UserBuildings.FirstOrDefault((o) => o.Factories.Contains(item));
+                if (pro == null) return; 
                 if(item.IsActive)
                 {
                     pro.GiveBonus(item);
