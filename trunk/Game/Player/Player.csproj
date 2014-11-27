@@ -101,6 +101,9 @@
     <Compile Include="View\Converters\IntSumValueConverter.cs" />
     <Compile Include="View\Converters\InvBoolConverter.cs" />
     <Compile Include="View\Converters\RecImageConverter.cs" />
+    <Compile Include="View\LoseView.xaml.cs">
+      <DependentUpon>LoseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NewBuildingView.xaml.cs">
       <DependentUpon>NewBuildingView.xaml</DependentUpon>
     </Compile>
@@ -128,7 +131,14 @@
     <Compile Include="View\WarView.xaml.cs">
       <DependentUpon>WarView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\WinView.xaml.cs">
+      <DependentUpon>WinView.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -193,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\WarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\WinView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,6 +277,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\war\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
