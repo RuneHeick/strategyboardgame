@@ -12,6 +12,14 @@ namespace SharedData.Types
     [Serializable]
     public class BuildingContainor:ISharedData
     {
+        public override bool Equals(object obj)
+        {
+            var i = obj as BuildingContainor;
+            if(i != null)
+                return Name == i.Name;
+            return false; 
+        }
+
         public string Id { get; set; } // unik id; 
         public string Name
         {
