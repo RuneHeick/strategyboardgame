@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\LoseViewModel.cs" />
     <Compile Include="ViewModel\NewBuildingViewModel.cs" />
     <Compile Include="ViewModel\Tabs\BuildingsTab.cs" />
     <Compile Include="ViewModel\Tabs\MyBuildingsTab.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="ViewModel\Tabs\WarTab.cs" />
     <Compile Include="ViewModel\TurnViewModel.cs" />
     <Compile Include="ViewModel\WarViewModel.cs" />
+    <Compile Include="ViewModel\WinViewModel.cs" />
     <Compile Include="View\Converters\AttackConverter.cs" />
     <Compile Include="View\Converters\IntSumValueConverter.cs" />
     <Compile Include="View\Converters\InvBoolConverter.cs" />
@@ -278,9 +280,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="View\war\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

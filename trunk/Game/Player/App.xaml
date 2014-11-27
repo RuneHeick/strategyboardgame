@@ -7,7 +7,15 @@
              xmlns:tv="clr-namespace:Player.View.TabView"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-        
+
+        <DataTemplate DataType="{x:Type vm:WinViewModel}">
+            <v:WinView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:LoseViewModel}">
+            <v:LoseView />
+        </DataTemplate>
+
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <v:LoginView />
         </DataTemplate>

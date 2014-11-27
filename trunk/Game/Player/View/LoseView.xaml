@@ -14,10 +14,10 @@
         
         <TextBlock Text="You Lose" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1" TextBlock.FontSize="30"  HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Winnar, FallbackValue=Player1}" Margin="0,0,10,0"/>
+            <TextBlock Text="{Binding Winner, FallbackValue=Player1}" Margin="0,0,10,0"/>
             <TextBlock Text="vs." Margin="0,0,10,0"/>
             <TextBlock Text="{Binding Loser, FallbackValue=Player2}" Margin="0,0,10,0" />
         </StackPanel>
-        <Button Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content=" Done " Margin="5"/>
+        <Button Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content=" Done " Margin="5" Command="{Binding DoneCommand}"/>
     </Grid>
 </UserControl>

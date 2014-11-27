@@ -172,6 +172,21 @@ namespace Player.ViewModel.Tabs
                     PlayerData.Instance.SwitchView(new WarViewModel(Con, Soldier.Value));
                 }
             }
+            else if (arg3 == SharedData.ChangeType.Added)
+            {
+                WarResultContaionor res = arg2 as WarResultContaionor;
+                if(res != null)
+                {
+                    if(res.Winner == PlayerData.Instance.Client.LoginName)
+                    {
+                        PlayerData.Instance.SwitchView(new WinViewModel(res));
+                    }
+                    else
+                    {
+                        PlayerData.Instance.SwitchView(new LoseViewModel(res));
+                    }
+                }
+            }
 
         }
 
