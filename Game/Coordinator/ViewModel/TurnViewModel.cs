@@ -9,7 +9,8 @@ using SharedLogic.Turn;
 using SharedData;
 using System.Windows.Threading;
 using Coordinator.ViewModel.SelectedViewModel;
-using System.Threading; 
+using System.Threading;
+using System.Windows.Input; 
 
 namespace Coordinator.ViewModel
 {
@@ -19,6 +20,7 @@ namespace Coordinator.ViewModel
 
         public string[] Teams { get; private set; }
 
+        public bool Pause { get; set; }
 
         private int currentIndex; 
         public int CurrentIndex
@@ -50,7 +52,7 @@ namespace Coordinator.ViewModel
 
         public TurnViewModel(MainWindowViewModel mainWindowViewModel)
         {
-            // TODO: Complete member initialization
+            Pause = false; 
             this.mainWindowViewModel = mainWindowViewModel;
             mainWindowViewModel.Server.RCContainor.OnDataManagerAdded += RCContainor_OnDataManagerAdded;
             Teams = mainWindowViewModel.Server.RCContainor.ResourceContainers;
@@ -117,7 +119,19 @@ namespace Coordinator.ViewModel
                 DoTurnData(manager, item);
             }
 
-            t.Start(); 
+            if(!Pause)
+                t.Start(); 
+        }
+
+        private RelayCommand nextCommand;
+        public ICommand NextCommand
+        {
+            get
+            {
+                if (nextCommand == null)
+                    nextCommand = new RelayCommand((p) => Next());
+                return nextCommand;
+            }
         }
 
         private void DoTurnData(DataManager manager, TurnTokenContainor item)

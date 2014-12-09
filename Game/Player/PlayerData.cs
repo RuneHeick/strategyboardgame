@@ -33,7 +33,7 @@ namespace Player
             }
         }
 
-        public Action<ViewModelBase> SwitchViewFunction { get; set; }
+        public Action<ViewModelBase, ViewPrioity> SwitchViewFunction { get; set; }
 
         private PlayerData() 
         {
@@ -42,11 +42,11 @@ namespace Player
             // Client setup in connect;
         }
 
-        public void SwitchView(ViewModelBase view)
+        public void SwitchView(ViewModelBase view, ViewPrioity priority)
         {
             if(SwitchViewFunction != null)
             {
-                SwitchViewFunction(view); 
+                SwitchViewFunction(view, priority); 
             }
         }
 
@@ -54,8 +54,15 @@ namespace Player
         {
             Client = new GameClient(ip, port);
 
+            Init(Client.dataManager);
+
             Client.dataManager.CollectionChanged += dataManager_CollectionChanged;
             Client.OnDisconnect += Client_OnDisconnect;
+        }
+
+        private void Init(DataManager dataManager)
+        {
+            
         }
 
 
@@ -89,7 +96,7 @@ namespace Player
                     if (ctype == ChangeType.Added)
                     {
                         TurnView = new TurnViewModel(turn);
-                        SwitchView(TurnView);
+                        SwitchView(TurnView, ViewPrioity.Top);
                     }
                     else
                     {

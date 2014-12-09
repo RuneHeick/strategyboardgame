@@ -12,7 +12,7 @@ namespace Player.ViewModel
 {
     public class MainWindowViewModel: ViewModelBase
     {
-        List<ViewModelBase> viewStack = new List<ViewModelBase>();         
+        List<ViewInfo> viewStack = new List<ViewInfo>();         
         ViewModelBase currentView_;
         public ViewModelBase CurrentView
         {
@@ -30,18 +30,31 @@ namespace Player.ViewModel
         public MainWindowViewModel()
         {
             PlayerData.Instance.SwitchViewFunction = AddOnStack;
-            AddOnStack(new LoginViewModel());
+            AddOnStack(new LoginViewModel(), ViewPrioity.Background);
         }
 
-        public void AddOnStack(ViewModelBase View)
+        public void AddOnStack(ViewModelBase View, ViewPrioity priority)
         {
             if(View != null)
             {
                 lock (viewStack)
                 {
                     View.OnCloseRequest += View_OnCloseRequest;
-                    CurrentView = View;
-                    viewStack.Insert(0, View);
+                    ViewInfo info = new ViewInfo(View, priority);
+                    for (int i = 0; i < viewStack.Count;i++)
+                    {
+                        if(viewStack[i].Priority >= info.Priority)
+                        {
+                            viewStack.Insert(i, info);
+                            if (i == 0)
+                                CurrentView = info.View;
+                            return; 
+                        }
+                    }
+
+                    viewStack.Add(info); 
+                    if(viewStack.Count == 1)
+                        CurrentView = info.View;
                 }
             }
         }
@@ -50,11 +63,12 @@ namespace Player.ViewModel
         {
             lock (viewStack)
             {
-                viewStack.Remove(View);
+                var viewInfo = viewStack.FirstOrDefault((o) => o.View == View);
+                viewStack.Remove(viewInfo);
                 if(viewStack.Count>0)
                 {
-                    if (CurrentView != viewStack[0])
-                        CurrentView = viewStack[0];
+                    if (CurrentView != viewStack[0].View)
+                        CurrentView = viewStack[0].View;
                 }
                 else
                 {
@@ -64,6 +78,25 @@ namespace Player.ViewModel
             View.OnCloseRequest -= View_OnCloseRequest;
         }
        
+        private class ViewInfo
+        {
+            public ViewInfo(ViewModelBase view,ViewPrioity priority)
+            {
+                Priority = priority;
+                View = view; 
+            }
 
+            public ViewPrioity Priority { get; set; }
+
+            public ViewModelBase View { get; set; }
+        }
     }
+
+    public enum ViewPrioity
+    {
+        Top = 0, 
+        Background = 255
+    }
+
+
 }

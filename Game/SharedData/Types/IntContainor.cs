@@ -32,6 +32,13 @@ namespace SharedData.Types
 
         public string Name { get; set;  }
 
+        public override bool Equals(object obj)
+        {
+            ISharedData item = obj as ISharedData;
+            if (item != null)
+                return item.Name == Name;
+            return base.Equals(obj);
+        }
         public void Update(ISharedData data)
         {
             IntContainor con = data as IntContainor; 

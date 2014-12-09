@@ -23,7 +23,7 @@ namespace Coordinator.ViewModel.SelectedViewModel
                 var recItem = item.ResearchValues[index];
                 SelectedName = recItem.RealName;
 
-                recItem.Value += 1;
+                mainVindow.ResearchManager.IncreaseValue(1, 0, recItem.RealName, manager);
             }
         }
 

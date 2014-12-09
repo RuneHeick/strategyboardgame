@@ -24,7 +24,6 @@ namespace Coordinator.Logic
         ObservableCollection<UserProduction> UserBuildings;
         RCLogic recManager;
 
-        private const int RESEARCHDIVISION = 5;
 
         DispatcherTimer ProductionTimer;
         private ResearchLogic ResearchManager;
@@ -53,7 +52,7 @@ namespace Coordinator.Logic
 
             ProductionTimer = new DispatcherTimer();
             ProductionTimer.Tick += new EventHandler(timer_Tick);
-            ProductionTimer.Interval = new TimeSpan(0, 0, 0, 5, 0);
+            ProductionTimer.Interval = new TimeSpan(0, 0, 0, MagicNumbers.PRODUCTIONCYCLE_SECONDS, 0);
             ProductionTimer.Start(); 
             this.ResearchManager = ResearchManager;
             ResearchManager.AddUpdate(BuildingsLevelChanged, "Buildings");
@@ -76,7 +75,7 @@ namespace Coordinator.Logic
                 foreach(UserProduction up in UserBuildings)
                 {
                     var Bonus = ResearchManager.GetResearchStats("Production", up.rec.manager);
-                    up.DoProduction(Bonus != null ? (int)Bonus.Value / RESEARCHDIVISION : 0);
+                    up.DoProduction(Bonus != null ? (int)Bonus.Value / MagicNumbers.RESEARCH_PRODUCTIONDEVISION : 0);
                 }
             }
         }
@@ -90,7 +89,7 @@ namespace Coordinator.Logic
                 var Bonus = ResearchManager.GetResearchStats("Production", up.rec.manager);
                 for(int i = 0; i<cycles; i++)
                 {
-                    up.DoProduction(Bonus != null ? (int)Bonus.Value / RESEARCHDIVISION : 0);
+                    up.DoProduction(Bonus != null ? (int)Bonus.Value / MagicNumbers.RESEARCH_PRODUCTIONDEVISION : 0);
                 }
             }
         }
