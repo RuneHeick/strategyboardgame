@@ -37,7 +37,7 @@ namespace Player.ViewModel
                     return Brushes.Green;
                 else
                     return Brushes.Gray;
-                }
+                
                 
             }
         }
