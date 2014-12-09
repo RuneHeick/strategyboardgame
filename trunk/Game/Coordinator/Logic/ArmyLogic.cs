@@ -26,7 +26,7 @@ namespace Coordinator.Logic
         public ArmyLogic()
         {
             timer.Tick += timer_Tick;
-            timer.Interval = new TimeSpan(0, 0, 10);
+            timer.Interval = new TimeSpan(0, 0, MagicNumbers.ARMYCREATETIME_SECONDS);
             timer.Start(); 
         }
 
@@ -147,8 +147,8 @@ namespace Coordinator.Logic
  
                 while(AttackerSoldiers.Count >0 && DefenderSoldiers.Count> 0)
                 {
-                    int AHit = warSelector.Next(war.Attacker.WarSkill - 100, war.Attacker.WarSkill);
-                    int BHit = warSelector.Next(war.Defender.WarSkill - 100, war.Defender.WarSkill);
+                    int AHit = warSelector.Next(war.Attacker.WarSkill - MagicNumbers.ATTACKDEFEND_STARTVALUE, war.Attacker.WarSkill);
+                    int BHit = warSelector.Next(war.Defender.WarSkill - MagicNumbers.ATTACKDEFEND_STARTVALUE, war.Defender.WarSkill);
 
                     AttackerSoldiers[0] -= BHit;
                     DefenderSoldiers[0] -= AHit;
@@ -166,17 +166,20 @@ namespace Coordinator.Logic
 
                 DefenterArmy.Soldier.Value += DefenderSoldiers.Count;
                 DefenterArmy.Workers.Value += (war.Defender.Alive - DefenderSoldiers.Count);
-
+   
                 WarResultContaionor result = new WarResultContaionor(war.ID);
                 if(AttackerSoldiers.Count == 0)
                 {
                     result.Loser = war.Attacker.Name;
+                    AttackerArmy.GamePoints.Value -= MagicNumbers.WARWIN_GAMEPOINT; 
                     result.Winner = war.Defender.Name;
+                    DefenterArmy.GamePoints.Value += MagicNumbers.WARWIN_GAMEPOINT; 
                 }
                 else
                 {
                     result.Loser = war.Defender.Name;
                     result.Winner = war.Attacker.Name;
+                    AttackerArmy.GamePoints.Value += MagicNumbers.WARWIN_GAMEPOINT; 
                 }
 
                 AttackerArmy.manager.Add(result);
@@ -226,6 +229,8 @@ namespace Coordinator.Logic
                         Attack = item.GetItem<TagIntContainor>(s);
                     else if(s.Contains("Defence"))
                         Defence = item.GetItem<TagIntContainor>(s);
+                    else if(s.Contains("Game Point"))
+                        GamePoints = item.GetItem<TagIntContainor>(s);
                 }
 
             }
@@ -241,6 +246,8 @@ namespace Coordinator.Logic
             public TagIntContainor Attack { get; private set; }
 
             public TagIntContainor Defence { get; private set; }
+
+            public TagIntContainor GamePoints { get; private set; }
 
             public int BaseCount
             {

@@ -3,6 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
         <Image Source="{Binding IS}" ></Image>
+        
+        
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" >
+            <Button Margin="5" Content=" Big Window " Command="{Binding ShowProjectionCommand}" />
+        </StackPanel>
+
+        <ContentControl Content="{Binding Views[0]}" Grid.Row="1" Grid.Column="1" MinWidth="70"/>
+        
     </Grid>
 </Window>

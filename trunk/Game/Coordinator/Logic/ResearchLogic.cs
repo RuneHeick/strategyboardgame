@@ -24,7 +24,7 @@ namespace Coordinator.Logic
         
         public ResearchLogic()
         {
-            timer.Interval = new TimeSpan(0, 0, 5);
+            timer.Interval = new TimeSpan(0, 0, MagicNumbers.RESEARCH_UPDATETIME_SECONDS);
             timer.Tick += timer_Tick;
             timer.Start(); 
         }
@@ -91,37 +91,44 @@ namespace Coordinator.Logic
                     if (school.IsActive)
                     {
                         var item = school.DoResearch();
-                        var reitem = profile.ResearchValues.FirstOrDefault((o) => o.RealName == item.Name);
-                        var oldret = profile.ResearchValuesTemps.FirstOrDefault((o) => o.RealName == item.Name);
-
-                        if (reitem != null)
-                        {
-                            reitem.Value += 0.25 + bonus;
-
-
-                            if (((int)reitem.Value) > ((int)oldret.Value))
-                            {
-                                if (handles.ContainsKey(reitem.RealName))
-                                {
-                                    for (int i = ((int)oldret.Value); i < ((int)reitem.Value); i++)
-                                    {
-                                        var handleslist = handles[reitem.RealName];
-                                        foreach (Action<string, DataManager> handle in handleslist)
-                                        {
-                                            handle(reitem.RealName, profile.Manager);
-                                        }
-                                    }
-                                }
-                                oldret.Value = reitem.Value;
-                            }
-                        }
-
-
+                        IncreaseValue(0.25, bonus, item.Name, profile.Manager);
+                        
                     }
                 }
             }
 
         }
+
+        public void IncreaseValue(double UpStats,double bonus , string Name, DataManager manager)
+        {
+            ResearchProfil profile = Profiles.FirstOrDefault((o) => o.Manager == manager);
+            var reitem = profile.ResearchValues.FirstOrDefault((o) => o.RealName == Name);
+            var oldret = profile.ResearchValuesTemps.FirstOrDefault((o) => o.RealName == Name);
+
+            if (reitem != null)
+            {
+                reitem.Value += UpStats + bonus;
+
+
+                if (((int)reitem.Value) > ((int)oldret.Value))
+                {
+                    if (handles.ContainsKey(reitem.RealName))
+                    {
+                        for (int i = ((int)oldret.Value); i < ((int)reitem.Value); i++)
+                        {
+                            var handleslist = handles[reitem.RealName];
+                            foreach (Action<string, DataManager> handle in handleslist)
+                            {
+                                handle(reitem.RealName, profile.Manager);
+                            }
+                        }
+                    }
+                    oldret.Value = reitem.Value;
+                }
+            }
+        }
+
+
 
         public DoubleTagContainor GetResearchStats(string name, DataManager manager)
         {

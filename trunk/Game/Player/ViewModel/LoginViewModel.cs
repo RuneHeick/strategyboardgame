@@ -53,6 +53,7 @@ namespace Player.ViewModel
             }
         }
 
+
         private void loginCommandExecute()
         {
             try
@@ -74,7 +75,7 @@ namespace Player.ViewModel
             PlayerData.Instance.Client.OnLoginComplete -= client_OnLoginComplete;
             if (obj)
             {
-                PlayerData.Instance.SwitchView(new MainViewModel());
+                PlayerData.Instance.SwitchView(new MainViewModel(), ViewPrioity.Background);
             }
             else
                 ErrorMsg = "Login forkert";

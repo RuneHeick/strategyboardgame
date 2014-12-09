@@ -30,7 +30,7 @@ namespace Player.ViewModel.Tabs
                 BuildingContainor a = e.NewItems[0] as BuildingContainor;
                 if(a != null)
                 {
-                    PlayerData.Instance.SwitchView(new NewBuildingViewModel(a));
+                    PlayerData.Instance.SwitchView(new NewBuildingViewModel(a), ViewPrioity.Top);
                 }
             }
 

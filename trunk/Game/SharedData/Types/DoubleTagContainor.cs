@@ -47,6 +47,14 @@ namespace SharedData.Types
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            ISharedData item = obj as ISharedData;
+            if (item != null)
+                return item.Name == Name;
+            return base.Equals(obj); 
+        }
+
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 

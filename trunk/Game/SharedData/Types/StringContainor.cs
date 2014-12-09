@@ -44,7 +44,14 @@ namespace SharedData.Types
         [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
-        
+        public override bool Equals(object obj)
+        {
+            ISharedData item = obj as ISharedData;
+            if (item != null)
+                return item.Name == Name;
+            return base.Equals(obj);
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

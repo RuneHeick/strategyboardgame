@@ -10,7 +10,8 @@ using System.Windows.Media;
 using Coordinator.Logic;
 using Logic;
 using Utility.ViewModel;
-using System.Collections.ObjectModel; 
+using System.Collections.ObjectModel;
+using System.Windows.Input; 
 
 namespace Coordinator.ViewModel
 {
@@ -28,7 +29,7 @@ namespace Coordinator.ViewModel
 
         public ProjectionViewModel Projection { get; private set; }
 
-        ObservableCollection<ViewModelBase> Views = new ObservableCollection<ViewModelBase>(); 
+        public ObservableCollection<ViewModelBase> Views { get; private set; }
 
         public MainWindowViewModel()
         {
@@ -51,18 +52,11 @@ namespace Coordinator.ViewModel
 
 
             // Views 
-
+            Views = new ObservableCollection<ViewModelBase>(); 
             Views.Add(new TurnViewModel(this));
 
-            Projection = new ProjectionViewModel();
-            View.ProjektionView view = new View.ProjektionView()
-            {
-                DataContext = Projection,
-                Name = "Projection",
-                Height = System.Windows.SystemParameters.PrimaryScreenHeight,
-                Width = System.Windows.SystemParameters.PrimaryScreenWidth
-            };
-            view.Show(); 
+            Projection = new ProjectionViewModel(this);
+            
 
         }
 
@@ -106,6 +100,36 @@ namespace Coordinator.ViewModel
                 return UserRec.GetImage("game point"); 
             }
         }
+
+        private RelayCommand showProjectionCommand;
+        public ICommand ShowProjectionCommand
+        {
+            get
+            {
+                if (showProjectionCommand == null)
+                    showProjectionCommand = new RelayCommand((p) => ShowProjection());
+                return showProjectionCommand;
+            }
+        }
+
+        private void ShowProjection()
+        {
+            try
+            {
+                View.ProjektionView view = new View.ProjektionView()
+                {
+                    DataContext = Projection,
+                    Name = "Projection",
+                    Height = System.Windows.SystemParameters.PrimaryScreenHeight,
+                    Width = System.Windows.SystemParameters.PrimaryScreenWidth
+                };
+                view.Show();
+            }
+            catch
+            { }
+        }
+        
+
 
     }
 }

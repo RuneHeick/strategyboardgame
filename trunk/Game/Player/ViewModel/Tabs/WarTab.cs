@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SharedData.Types;
 using System.Collections.ObjectModel;
 using SharedLogic.Global;
+using SharedData;
 
 namespace Player.ViewModel.Tabs
 {
@@ -130,10 +131,10 @@ namespace Player.ViewModel.Tabs
             string[] names = PlayerData.Instance.Manager.ItemNames;
             foreach (string name in names)
             {
-                if (name.Contains("Resources"))
+                if (name.Contains("Resources") || name.Contains("War"))
                 {
-                    TagIntContainor item = PlayerData.Instance.Client.dataManager.GetItem<TagIntContainor>(name);
-                    if (item != null && item.Tag == "Resources")
+                    ISharedData item = PlayerData.Instance.Client.dataManager.GetItem<ISharedData>(name);
+                    if (item != null)
                     {
                         dataManager_CollectionChanged(item.Name, item, SharedData.ChangeType.Added, null);
                     }
@@ -169,7 +170,7 @@ namespace Player.ViewModel.Tabs
             {
                 if (arg3 == SharedData.ChangeType.Added)
                 {
-                    PlayerData.Instance.SwitchView(new WarViewModel(Con, Soldier.Value));
+                    PlayerData.Instance.SwitchView(new WarViewModel(Con, Soldier.Value), ViewPrioity.Top);
                 }
             }
             else if (arg3 == SharedData.ChangeType.Added)
@@ -179,11 +180,11 @@ namespace Player.ViewModel.Tabs
                 {
                     if(res.Winner == PlayerData.Instance.Client.LoginName)
                     {
-                        PlayerData.Instance.SwitchView(new WinViewModel(res));
+                        PlayerData.Instance.SwitchView(new WinViewModel(res), ViewPrioity.Top);
                     }
                     else
                     {
-                        PlayerData.Instance.SwitchView(new LoseViewModel(res));
+                        PlayerData.Instance.SwitchView(new LoseViewModel(res), ViewPrioity.Top);
                     }
                 }
             }

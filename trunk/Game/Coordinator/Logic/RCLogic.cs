@@ -31,7 +31,7 @@ namespace Coordinator.Logic
             UserRec rec = managers.FirstOrDefault((o)=> o.manager == manager);
             if(rec != null)
             {
-                rec.Increase(name, 5);
+                rec.Increase(name, MagicNumbers.RESEARCH_DEFENTATTACKBONUS);
             }
         }
 
@@ -44,8 +44,8 @@ namespace Coordinator.Logic
             user.AddRec("Food", 50);
             user.AddRec("Power", 50);
             user.AddRec("Game Point", 50);
-            user.AddRec("Attack", 100);
-            user.AddRec("Defence", 100);
+            user.AddRec("Attack", MagicNumbers.ATTACKDEFEND_STARTVALUE);
+            user.AddRec("Defence", MagicNumbers.ATTACKDEFEND_STARTVALUE);
             user.AddRec("Soldier", 0);
             user.AddRec("Worker", 0);
         }
