@@ -26,18 +26,17 @@ namespace Player.ViewModel
         {
             get
             {
-                switch(Type.ToLower())
-                {
-                    case "farm":
-                        return Brushes.Yellow;
-                    case "water plant":
-                        return Brushes.Blue;
-                    case "power plant":
-                        return Brushes.Red;
-                    case "house":
-                        return Brushes.Green;
-                    default:
-                        return Brushes.Gray;
+                string type = Type.ToLower();
+                if(type.Contains("farm"))
+                    return Brushes.Yellow;
+                if(type.Contains("water"))
+                    return Brushes.Blue;
+                if(type.Contains("power"))
+                    return Brushes.Red;
+                if(type.Contains("house"))
+                    return Brushes.Green;
+                else
+                    return Brushes.Gray;
                 }
                 
             }
