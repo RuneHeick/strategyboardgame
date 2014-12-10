@@ -112,6 +112,17 @@ namespace Coordinator.ViewModel
             }
         }
 
+        private RelayCommand doResearchCommand;
+        public ICommand DoResearchCommand
+        {
+            get
+            {
+                if (doResearchCommand == null)
+                    doResearchCommand = new RelayCommand((p) => ResearchManager.DoResearch());
+                return doResearchCommand;
+            }
+        }
+
         private void ShowProjection()
         {
             try

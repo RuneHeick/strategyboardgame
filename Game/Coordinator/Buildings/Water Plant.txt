@@ -1,7 +1,8 @@
 Create
-Water=5
-Give 
+Water=25
+Give
 Worker=-1
 Cost
-Power=1
+Power=10
 BuildingFee
+Power=50

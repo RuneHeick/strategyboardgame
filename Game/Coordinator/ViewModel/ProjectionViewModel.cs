@@ -12,6 +12,7 @@ using Coordinator.Logic;
 using System.Windows.Threading;
 using SharedData;
 using SharedData.Types;
+using System.ComponentModel;
 
 namespace Coordinator.ViewModel
 {
@@ -20,7 +21,7 @@ namespace Coordinator.ViewModel
 
         private DispatcherTimer Timer = new DispatcherTimer();
 
-        private ObservableCollection<CollectionItem> Stats = new ObservableCollection<CollectionItem>(); 
+        public ObservableCollection<CollectionItem> Stats {get; private set;} 
 
         private string currentTeam;
         public string CurrentTeam
@@ -62,6 +63,7 @@ namespace Coordinator.ViewModel
             {
                 teams = value;
                 OnPropertyChanged("Teams");
+                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(()=>Timer_Tick(null, null))); 
             }
         }
 
@@ -70,13 +72,15 @@ namespace Coordinator.ViewModel
         public ProjectionViewModel(MainWindowViewModel mvvm)
         {
             this.Mainwindow = mvvm;
+            Stats = new ObservableCollection<CollectionItem>(); 
             Model = new PlotModel("Game Stats");
             Model.Axes.Add(new DateTimeAxis());
             Model.Axes.Add(new LinearAxis());
 
             Timer.Tick += Timer_Tick;
             Timer.Interval = MagicNumbers.GAMEPOINT_SAMPLETIME;
-            Timer.Start(); 
+            Timer.Start();
+           
         }
 
 
@@ -109,35 +113,52 @@ namespace Coordinator.ViewModel
         {
             var item = player.Manager.GetItem<TagIntContainor>("Game PointResources");
             player.Line.Points.Add(DateTimeAxis.CreateDataPoint(DateTime.Now, item.Value));
+            player.OnPropertyChanged("Average");
         }
 
-
-        class CollectionItem 
-        {
-            public CollectionItem(string Name)
-            {
-                Line = new LineSeries(Name);
-            }
-
-            public DataManager Manager { get; set; } 
-
-            public LineSeries Line { get; set; }
-
-            public double Average
-            {
-                get
-                {
-                    double sum = 0; 
-                    for(int i = 0; i<Line.Points.Count; i++)
-                    {
-                        sum += Line.Points[i].Y;
-                    }
-                    return sum / Line.Points.Count; 
-                }
-            }
-
-        }
 
         
+
+        
+    }
+
+    public class CollectionItem : INotifyPropertyChanged
+    {
+        public CollectionItem(string Name)
+        {
+            Line = new LineSeries(Name);
+            
+        }
+
+        public DataManager Manager { get; set; }
+
+        public LineSeries Line { get; set; }
+
+        public double Average
+        {
+            get
+            {
+                double sum = 0;
+                for (int i = 0; i < Line.Points.Count; i++)
+                {
+                    sum += Line.Points[i].Y;
+                }
+                return sum / Line.Points.Count;
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                var e = new PropertyChangedEventArgs(propertyName);
+                handler(this, e);
+            }
+        }
+
     }
 }

@@ -1,0 +1,10 @@
+Create
+Give 
+Worker=-2
+Cost
+Power=10
+BuildingFee
+Power=100
+Water=50
+Level
+Level=1
