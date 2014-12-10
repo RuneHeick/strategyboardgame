@@ -1,0 +1,10 @@
+Create
+Give 
+Game Point=10
+Cost
+BuildingFee
+Power=100
+Water=100
+Food=100
+Level
+Level=1

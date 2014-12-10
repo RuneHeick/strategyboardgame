@@ -18,6 +18,7 @@
         
         <StackPanel Grid.Row="1" Orientation="Horizontal" >
             <Button Margin="5" Content=" Big Window " Command="{Binding ShowProjectionCommand}" />
+            <Button Margin="5" Content=" Research " Command="{Binding DoResearchCommand}" />
         </StackPanel>
 
         <ContentControl Content="{Binding Views[0]}" Grid.Row="1" Grid.Column="1" MinWidth="70"/>

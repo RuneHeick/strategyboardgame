@@ -43,15 +43,21 @@
         <Border Grid.Column="1" Grid.Row="1" BorderThickness="2" BorderBrush="Black" CornerRadius="10" Margin="5">
             <ContentControl  Content="{Binding SelectedView}" />
         </Border>
-        <ItemsControl  Grid.RowSpan="2" ItemsSource="{Binding Teams, Mode=OneWay}"  >
+        <ItemsControl  Grid.RowSpan="2" ItemsSource="{Binding Stats, Mode=OneWay}"  >
             <ItemsControl.Resources>
                 <mvvm:DataContextSpy x:Key="spy" />
                 <view:BackgroundConverter x:Key="BackgroundConverter" />
             </ItemsControl.Resources>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Height="60" Margin="5">                   
-                        <TextBlock Text="{Binding Mode=OneWay}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Border Height="60" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Line.Title, Mode=OneWay}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" />
+                            <TextBlock Margin="5" FontSize="14" VerticalAlignment="Center" >(Points</TextBlock>
+                            <TextBlock Margin="5" FontSize="14" Text="{Binding Average}" VerticalAlignment="Center" ></TextBlock>
+                            <TextBlock Margin="5" FontSize="14" VerticalAlignment="Center" >)</TextBlock>
+                        </StackPanel>
+                        
                         <Border.Background>
                             <MultiBinding Converter="{StaticResource BackgroundConverter}">
                                 <Binding  />

@@ -40,6 +40,12 @@ namespace Coordinator.Logic
             }
         }
 
+        public void DoResearch()
+        {
+            timer_Tick(null, null); 
+        }
+
+
         public void Create(string Name, DataManager data)
         {
             lock (Profiles)

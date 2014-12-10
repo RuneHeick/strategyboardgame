@@ -1,9 +1,12 @@
 Create
 Worker=0
 Give 
-Worker=4
+Worker=10
 Cost
-Food=1
-Water=1
+Food=20
+Water=20
+Power=20
 BuildingFee
-Power=5
+Power=10
+Food=10
+Water=10
