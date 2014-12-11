@@ -15,7 +15,7 @@ namespace Network.Server
         protected byte[] sizebuffer = new byte[3];
         protected byte[] Databuffer;
         private readonly object ReciveLock = new object(); 
-        int readindex = 0; 
+        int readindex = 0;
 
         DataManager dataManager_;
         public DataManager dataManager
