@@ -13,5 +13,6 @@ namespace Player
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }
