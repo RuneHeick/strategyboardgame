@@ -37,6 +37,9 @@ namespace Player.ViewModel
 
         public LoginViewModel()
         {
+            Name = "Name";
+            Password = "Password"; 
+            
             Ip = "127.0.0.1";
             Port = 5050; 
         }

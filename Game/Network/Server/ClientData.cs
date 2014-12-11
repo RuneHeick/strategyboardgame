@@ -1,6 +1,7 @@
 ﻿using SharedData;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -13,6 +14,7 @@ namespace Network.Server
     {
         protected byte[] sizebuffer = new byte[3];
         protected byte[] Databuffer;
+        private readonly object ReciveLock = new object(); 
         int readindex = 0; 
 
         DataManager dataManager_;
@@ -49,21 +51,21 @@ namespace Network.Server
             LoginName = "";
             Password = ""; 
             this.handler = handler;
-            NetworkStream stream = handler.GetStream();
-            stream.BeginRead(sizebuffer, 0, sizebuffer.Length, DataReceivedSize, stream);
+
+            handler.Client.BeginReceive(sizebuffer, 0, sizebuffer.Length, 0, DataReceivedSize, handler.Client);
         }
 
 
         #region Recive
-
         protected void DataReceivedSize(IAsyncResult result)
         {
-            NetworkStream stream = (NetworkStream)result.AsyncState;
+            Socket stream = (Socket)result.AsyncState;
+            SocketError Error; 
             try
             {
-                int len = stream.EndRead(result);
+                int len = stream.EndReceive(result, out Error);
 
-                if(len != 0)
+                if(len != 0 && Error == SocketError.Success)
                 {
                     readindex += len; 
 
@@ -72,11 +74,11 @@ namespace Network.Server
                         int size = sizebuffer[1] + (sizebuffer[2] << 8);
                         Databuffer = new byte[size];
                         readindex = 0;
-                        stream.BeginRead(Databuffer, 0, Databuffer.Length, DataReceivedData, stream);
+                        stream.BeginReceive(Databuffer, 0, Databuffer.Length,0, DataReceivedData, stream);
                     }
                     else
                     {
-                        stream.BeginRead(sizebuffer, readindex, sizebuffer.Length - readindex, DataReceivedSize, stream);
+                        stream.BeginReceive(sizebuffer, readindex, sizebuffer.Length - readindex,0, DataReceivedSize, stream);
                     }
                 }
                 else
@@ -84,7 +86,7 @@ namespace Network.Server
                     Disconnected();
                 }
             }
-            catch
+            catch(Exception e)
             {
                 Disconnected();
             }
@@ -92,30 +94,30 @@ namespace Network.Server
 
         private void DataReceivedData(IAsyncResult result)
         {
-            NetworkStream stream = (NetworkStream)result.AsyncState;
+
+            Socket stream = (Socket)result.AsyncState;
+            SocketError Error; 
             try
             {
-                int len = stream.EndRead(result);
-
-                if (len == 0)
+                int len = stream.EndReceive(result, out Error);
+                
+                if (len != 0 && Error == SocketError.Success)
                 {
-                    Disconnected();
-                }
-                else
-                {
-                    readindex += len; 
-                    if(readindex == Databuffer.Length)
+                    readindex += len;
+                    if (readindex == Databuffer.Length)
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() => HandleEvent((NetworkCommands)sizebuffer[0], Databuffer)));
-                        readindex = 0; 
-                        stream.BeginRead(sizebuffer, 0, sizebuffer.Length, DataReceivedSize, stream);
+                        readindex = 0;
+                        stream.BeginReceive(sizebuffer, 0, sizebuffer.Length, 0, DataReceivedSize, stream);
                     }
                     else
                     {
-                        stream.BeginRead(Databuffer, readindex, Databuffer.Length - readindex, DataReceivedData, stream);
+                        stream.BeginReceive(Databuffer, readindex, Databuffer.Length - readindex, 0, DataReceivedData, stream);
                     }
-
-                    
+                }
+                else
+                {
+                    Disconnected();
                 }
 
             }
@@ -186,8 +188,8 @@ namespace Network.Server
             {
                 LogInData login = new LogInData();
                 login.fromByte(data);
-                LoginName = login.Name;
-                Password = login.Password;
+                LoginName = login.Name.Trim();
+                Password = login.Password.Trim();
 
                 if (OnRemoteLogIn != null)
                     OnRemoteLogIn(this, login.Create); 
