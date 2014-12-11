@@ -12,9 +12,8 @@ namespace Network.Server
 {
     public class ClientData
     {
-        protected byte[] sizebuffer = new byte[3];
+        protected byte[] sizebuffer = new byte[1+4];
         protected byte[] Databuffer;
-        private readonly object ReciveLock = new object(); 
         int readindex = 0;
 
         DataManager dataManager_;
@@ -67,18 +66,30 @@ namespace Network.Server
 
                 if(len != 0 && Error == SocketError.Success)
                 {
-                    readindex += len; 
+                    readindex += len;
 
-                    if(readindex == sizebuffer.Length)
+                    if (IsKnownMessage(sizebuffer[0]))
                     {
-                        int size = sizebuffer[1] + (sizebuffer[2] << 8);
-                        Databuffer = new byte[size];
-                        readindex = 0;
-                        stream.BeginReceive(Databuffer, 0, Databuffer.Length,0, DataReceivedData, stream);
+                        if (readindex == sizebuffer.Length)
+                        {
+                            int size = sizebuffer[1] + (sizebuffer[2] << 8) + (sizebuffer[3] << 16) + (sizebuffer[4] << 24);
+                            Databuffer = new byte[size];
+                            readindex = 0;
+                            stream.BeginReceive(Databuffer, 0, Databuffer.Length, 0, DataReceivedData, stream);
+                        }
+                        else
+                        {
+                            stream.BeginReceive(sizebuffer, readindex, sizebuffer.Length - readindex, 0, DataReceivedSize, stream);
+                        }
                     }
-                    else
+                    else // Will hopfully never be called
                     {
-                        stream.BeginReceive(sizebuffer, readindex, sizebuffer.Length - readindex,0, DataReceivedSize, stream);
+                        if(stream.Available>0)
+                        {
+                            byte[] tempbuffet = new byte[stream.Available];
+                            stream.Receive(tempbuffet); 
+                        }
+                        stream.BeginReceive(sizebuffer, 0, sizebuffer.Length, 0, DataReceivedSize, stream);
                     }
                 }
                 else
@@ -90,6 +101,11 @@ namespace Network.Server
             {
                 Disconnected();
             }
+        }
+
+        private bool IsKnownMessage(byte Command)
+        {
+            return Enum.IsDefined(typeof(NetworkCommands), (int)Command);
         }
 
         private void DataReceivedData(IAsyncResult result)
@@ -131,6 +147,7 @@ namespace Network.Server
         #endregion
 
         #region Send 
+
         public void Send(NetworkCommands commands,byte[] data)
         {
             if (handler.Connected == true)
@@ -139,7 +156,7 @@ namespace Network.Server
                 {
                     try
                     {
-                        byte[] startIndexer = new byte[] { (byte)commands, (byte)data.Length, (byte)((data.Length >> 8)) };
+                        byte[] startIndexer = new byte[] { (byte)commands, (byte)data.Length, (byte)((data.Length >> 8)), (byte)((data.Length >> 16)), (byte)((data.Length >> 24)) };
                         byte[] Sendbuffer = new byte[startIndexer.Length + data.Length];
                         Array.Copy(startIndexer, 0, Sendbuffer, 0, startIndexer.Length);
                         Array.Copy(data, 0, Sendbuffer, startIndexer.Length, data.Length);
@@ -157,7 +174,6 @@ namespace Network.Server
 
 
         #endregion 
-
 
         #region handler
 

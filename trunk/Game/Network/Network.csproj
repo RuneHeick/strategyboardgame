@@ -52,6 +52,7 @@
     <Compile Include="Server\ClientData.cs" />
     <Compile Include="Server\GameServer.cs" />
     <Compile Include="Server\ResourceContainer.cs" />
+    <Compile Include="Signal.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
