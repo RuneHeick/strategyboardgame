@@ -33,8 +33,7 @@ namespace Network.Client
             handler = new TcpClient();
             handler.Connect(ip, port);
 
-            NetworkStream stream = handler.GetStream();
-            stream.BeginRead(sizebuffer, 0, sizebuffer.Length, DataReceivedSize, stream);
+            handler.Client.BeginReceive(sizebuffer, 0, sizebuffer.Length, 0, DataReceivedSize, handler.Client);
         }
 
         public void Login(string Name, string Password, bool Create = false)
