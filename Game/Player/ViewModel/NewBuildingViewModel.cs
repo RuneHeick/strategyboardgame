@@ -36,7 +36,7 @@ namespace Player.ViewModel
                 if(type.Contains("house"))
                     return Brushes.Green;
                 else
-                    return Brushes.Gray;
+                    return Brushes.Fuchsia;
                 
                 
             }
