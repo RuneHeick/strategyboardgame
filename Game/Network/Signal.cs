@@ -14,6 +14,7 @@ namespace Network
     {
 
         private ClientData parrent;
+        UInt16 currentSignalID = 0; 
 
         public SignalManager(ClientData Parrent)
         {
@@ -21,6 +22,12 @@ namespace Network
 
         }
 
+        private void incrementCurrentSignalID()
+        {
+            currentSignalID++;
+            if (currentSignalID == 0)
+                currentSignalID++;
+        }
 
         public void Send(SignalBase Signal, Action<SignalBase> CallBack = null)
         {
