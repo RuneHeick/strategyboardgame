@@ -47,7 +47,9 @@ namespace Player.ViewModel
             addTab(b);
             addTab(new WarTab(b));
             addTab(new ResearchTab());
-            Rec = new UserRec(PlayerData.Instance.Client.dataManager); 
+            Rec = new UserRec(PlayerData.Instance.Client.dataManager);
+
+            
         }
 
         public void addTab(TabBase item)

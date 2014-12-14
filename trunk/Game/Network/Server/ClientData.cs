@@ -36,21 +36,25 @@ namespace Network.Server
                 }
             }
         }
-     
+
+        public SignalManager Signal { get; private set; }
+
         public string LoginName { get; set; }
         public string Password { get; set; }
 
         protected TcpClient handler;
 
         protected ClientData()
-        { }
+        {
+            Signal = new SignalManager(this); 
+        }
 
         public ClientData(TcpClient handler)
         {
             LoginName = "";
             Password = ""; 
             this.handler = handler;
-
+            Signal = new SignalManager(this); 
             handler.Client.BeginReceive(sizebuffer, 0, sizebuffer.Length, 0, DataReceivedSize, handler.Client);
         }
 
@@ -217,6 +221,14 @@ namespace Network.Server
 
                 LoginAccepted(login.Accepted); 
             }
+            if (EventType == NetworkCommands.Signal)
+            {
+                Signal.SignalRecived(data, SignalManager.SignalType.Signal);
+            }
+            if (EventType == NetworkCommands.SignalResponse)
+            {
+                Signal.SignalRecived(data, SignalManager.SignalType.Response);
+            }
         }
 
         protected virtual void LoginAccepted(bool isAccepted)
@@ -250,6 +262,8 @@ namespace Network.Server
         Login = 0,
         Data = 1,
         AcceptedLogin = 3,
+        Signal = 4, 
+        SignalResponse = 5
     }
 
 }
