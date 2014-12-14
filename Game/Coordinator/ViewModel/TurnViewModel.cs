@@ -10,7 +10,9 @@ using SharedData;
 using System.Windows.Threading;
 using Coordinator.ViewModel.SelectedViewModel;
 using System.Threading;
-using System.Windows.Input; 
+using System.Windows.Input;
+using Signal;
+using Signals; 
 
 namespace Coordinator.ViewModel
 {
@@ -45,6 +47,7 @@ namespace Coordinator.ViewModel
             }
         }
 
+        private uint Turn = 0; 
 
         TurnTokenContainor CurrentToken = null; 
 
@@ -129,9 +132,19 @@ namespace Coordinator.ViewModel
             get
             {
                 if (nextCommand == null)
-                    nextCommand = new RelayCommand((p) => Next());
+                    nextCommand = new RelayCommand((p) => SignalTest());
                 return nextCommand;
             }
+        }
+
+        private void SignalTest()
+        {
+            mainWindowViewModel.Server.Cliens[0].Signal.Send<TurnTokenSignal>(new TurnTokenSignal(), ResponseSignal); 
+        }
+
+        private void ResponseSignal(TurnTokenSignal obj)
+        {
+            
         }
 
         private void DoTurnData(DataManager manager, TurnTokenContainor item)

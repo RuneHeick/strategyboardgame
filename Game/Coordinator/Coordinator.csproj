@@ -220,6 +220,10 @@
       <Project>{ccac50f3-b4d3-4546-9795-8049dfbee4cd}</Project>
       <Name>SharedLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Signals\Signals.csproj">
+      <Project>{6dbbd8b5-5523-49a3-91b4-d94f6dbb7c5c}</Project>
+      <Name>Signals</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
       <Name>Utility</Name>
