@@ -28,6 +28,7 @@ namespace Network.Server
                 if (dataManager_ != null)
                 {
                     dataManager_.Updates -= OnNewUpdates;
+                    dataManager.Signal.SendRequest -= Send;
                 }
                 dataManager_ = value;
                 if (value != null)
@@ -37,8 +38,6 @@ namespace Network.Server
             }
         }
 
-        public SignalManager Signal { get; private set; }
-
         public string LoginName { get; set; }
         public string Password { get; set; }
 
@@ -46,15 +45,14 @@ namespace Network.Server
 
         protected ClientData()
         {
-            Signal = new SignalManager(this); 
+
         }
 
         public ClientData(TcpClient handler)
         {
             LoginName = "";
             Password = ""; 
-            this.handler = handler;
-            Signal = new SignalManager(this); 
+            this.handler = handler; 
             handler.Client.BeginReceive(sizebuffer, 0, sizebuffer.Length, 0, DataReceivedSize, handler.Client);
         }
 

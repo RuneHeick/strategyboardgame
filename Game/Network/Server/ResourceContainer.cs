@@ -21,29 +21,11 @@ namespace Network.Server
 
         public DataManager GetDataManager(string Name, string Password)
         {
-            if(Items.ContainsKey(Name))
+            var item = GetContainorItem(Name, Password);
+            if (item != null)
             {
-                ContainorItem item = Items[Name]; 
-                if(item.Password == Password)
-                {
-                    return item.Data;
-                }
+                return item.Data;
             }
-            else
-            {
-                ContainorItem item = new ContainorItem()
-                    {
-                        Password = Password,
-                        Name = Name,
-                        Data = new DataManager()
-                    };
-
-                Items.Add(Name, item);
-                if (OnDataManagerAdded != null)
-                    OnDataManagerAdded(Name,item.Data); 
-                return item.Data; 
-            }
-
             return null; 
         }
 
@@ -61,8 +43,49 @@ namespace Network.Server
             }
         }
 
+        public SignalManager GetSignalManager(string Name, string Password)
+        {
+            var item = GetContainorItem(Name, Password); 
+            if(item != null)
+            {
+                return item.Signal; 
+            }
+            return null; 
+        }
+
+        private ContainorItem GetContainorItem(string Name, string Password)
+        {
+            if (Items.ContainsKey(Name))
+            {
+                ContainorItem item = Items[Name];
+                if (item.Password == Password)
+                {
+                    return item;
+                }
+            }
+            else
+            {
+                ContainorItem item = new ContainorItem()
+                {
+                    Password = Password,
+                    Name = Name,
+                    Data = new DataManager(),
+                    Signal = new SignalManager()
+                };
+
+                Items.Add(Name, item);
+                if (OnDataManagerAdded != null)
+                    OnDataManagerAdded(Name, item.Data);
+                return item;
+            }
+
+            return null; 
+        }
+
+
         class ContainorItem
         {
+            public SignalManager Signal { get; set; }
             public DataManager Data { get; set; }
             public string Password { get; set;  }
 

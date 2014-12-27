@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coordinator", "Coordinator\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Network", "Network\Network.csproj", "{0F83E9D8-20C1-4660-A732-EF9211F3F1CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedData", "SharedData\SharedData.csproj", "{CD2EEB53-51AC-4C28-AE55-84CCAFE298BA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{C4D9761E-318F-425C-BB76-A83D476C2E6B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedLogic", "SharedLogic\SharedLogic.csproj", "{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}"
@@ -39,10 +37,6 @@ Global
 		{0F83E9D8-20C1-4660-A732-EF9211F3F1CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F83E9D8-20C1-4660-A732-EF9211F3F1CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F83E9D8-20C1-4660-A732-EF9211F3F1CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD2EEB53-51AC-4C28-AE55-84CCAFE298BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD2EEB53-51AC-4C28-AE55-84CCAFE298BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD2EEB53-51AC-4C28-AE55-84CCAFE298BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD2EEB53-51AC-4C28-AE55-84CCAFE298BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4D9761E-318F-425C-BB76-A83D476C2E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4D9761E-318F-425C-BB76-A83D476C2E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4D9761E-318F-425C-BB76-A83D476C2E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU

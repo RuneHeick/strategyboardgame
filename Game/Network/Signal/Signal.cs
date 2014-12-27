@@ -13,17 +13,15 @@ namespace Network
 {
     public class SignalManager
     {
-
-        private ClientData parrent;
         UInt16 currentSignalID = 0;
 
         private Dictionary<UInt16, Action<SignalBase>> SendSignals = new Dictionary<ushort, Action<SignalBase>>();
         
         private Dictionary<Type, List<SubscriberInfo>> Subscribers = new Dictionary<Type, List<SubscriberInfo>>(); 
 
-        public SignalManager(ClientData Parrent)
+        public SignalManager()
         {
-            this.parrent = Parrent; 
+            
 
         }
 
@@ -66,7 +64,7 @@ namespace Network
             Array.Copy(idByte, packet, idByte.Length);
             Array.Copy(signalByte, 0, packet, idByte.Length, signalByte.Length);
 
-            parrent.Send(NetworkCommands.Signal, packet); 
+            FireOnSendReqest(NetworkCommands.Signal, packet); 
         }
 
         public void AddSignalHandler<T>(Action<T> Signal) where T: SignalBase
@@ -188,7 +186,7 @@ namespace Network
             byte[] packet = new byte[signalByte.Length + idByte.Length];
             Array.Copy(idByte, packet, idByte.Length);
             Array.Copy(signalByte, 0, packet, idByte.Length, signalByte.Length);
-            parrent.Send(NetworkCommands.SignalResponse, packet);
+            FireOnSendReqest(NetworkCommands.SignalResponse, packet);
         }
 
         private void ResponseRecived(SignalBase item, UInt16 id)
@@ -239,6 +237,16 @@ namespace Network
         {
             Signal, 
             Response
+        }
+
+        public event Action<NetworkCommands,byte[]> SendRequest; 
+
+        private void FireOnSendReqest(NetworkCommands commands,byte[] data)
+        {
+            if(SendRequest != null)
+            {
+                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(()=>SendRequest(commands,data)); 
+            }
         }
 
     }
