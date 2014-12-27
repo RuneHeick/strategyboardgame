@@ -34,6 +34,7 @@ namespace Network.Server
             RCContainor = new ResourceContainer(); 
         }
 
+
         private void AcceptConnection(IAsyncResult ar)
         {
             TcpListener listener = (TcpListener)ar.AsyncState;
@@ -102,7 +103,7 @@ namespace Network.Server
                     if (manager != null)
                     {
                         client.dataManager = manager;
-
+                        client.Signal = RCContainor.GetSignalManager(client.LoginName, client.Password);
                         byte[] data = manager.GetAllData();
 
                         if (data != null)

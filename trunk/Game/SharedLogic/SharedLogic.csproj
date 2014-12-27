@@ -67,10 +67,6 @@
     <Compile Include="Global\WarContainor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharedData\SharedData.csproj">
-      <Project>{cd2eeb53-51ac-4c28-ae55-84ccafe298ba}</Project>
-      <Name>SharedData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
       <Name>Utility</Name>

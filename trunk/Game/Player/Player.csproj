@@ -247,10 +247,6 @@
       <Project>{0f83e9d8-20c1-4660-a732-ef9211f3f1ce}</Project>
       <Name>Network</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SharedData\SharedData.csproj">
-      <Project>{cd2eeb53-51ac-4c28-ae55-84ccafe298ba}</Project>
-      <Name>SharedData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SharedLogic\SharedLogic.csproj">
       <Project>{ccac50f3-b4d3-4546-9795-8049dfbee4cd}</Project>
       <Name>SharedLogic</Name>
