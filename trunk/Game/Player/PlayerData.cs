@@ -11,6 +11,7 @@ using Utility.ViewModel;
 using SharedLogic.Turn;
 using Player.ViewModel;
 using SharedLogic.Global;
+using Signals;
 
 namespace Player
 {
@@ -62,7 +63,13 @@ namespace Player
 
         private void Init(DataManager dataManager)
         {
-            
+            dataManager.Signal.AddSignalHandler<TurnTokenSignal>(HandelTurnView); 
+        }
+
+        private void HandelTurnView(TurnTokenSignal obj)
+        {
+            var item = new TurnViewModel(obj);
+            SwitchView(item, ViewPrioity.Top);
         }
 
 
@@ -73,7 +80,7 @@ namespace Player
 
         void dataManager_CollectionChanged(string Name, ISharedData item, ChangeType ctype, DataManager manager)
         {
-            if(Name.Contains("Resources"))
+            if (Name.Contains("Resources"))
             {
                 TagIntContainor rc = item as TagIntContainor;
                 if (rc != null && rc.Tag == "Resources")
@@ -84,37 +91,20 @@ namespace Player
                     }
                     else
                     {
-                        Resources.Remove(rc); 
+                        Resources.Remove(rc);
                     }
                 }
 
             }
 
-                var turn = item as TurnTokenContainor;
-                if (turn != null)
+            var user = item as UsersList;
+            if (user != null)
+            {
+                if (ctype == ChangeType.Added)
                 {
-                    if (ctype == ChangeType.Added)
-                    {
-                        TurnView = new TurnViewModel(turn);
-                        SwitchView(TurnView, ViewPrioity.Top);
-                    }
-                    else
-                    {
-                        TurnView.CreateCloseRequest();
-                    }
+                    Users = user;
                 }
-
-                var user = item as UsersList; 
-                if(user != null)
-                {
-                    if(ctype == ChangeType.Added)
-                    {
-                        Users = user; 
-                    }
-                }
-
-
-
+            }
         }
 
 

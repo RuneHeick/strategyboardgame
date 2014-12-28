@@ -48,7 +48,7 @@ namespace Network.Server
             var item = GetContainorItem(Name, Password); 
             if(item != null)
             {
-                return item.Signal; 
+                return item.Data.Signal; 
             }
             return null; 
         }
@@ -70,7 +70,6 @@ namespace Network.Server
                     Password = Password,
                     Name = Name,
                     Data = new DataManager(),
-                    Signal = new SignalManager()
                 };
 
                 Items.Add(Name, item);
@@ -85,7 +84,6 @@ namespace Network.Server
 
         class ContainorItem
         {
-            public SignalManager Signal { get; set; }
             public DataManager Data { get; set; }
             public string Password { get; set;  }
 

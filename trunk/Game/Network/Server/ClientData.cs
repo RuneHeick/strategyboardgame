@@ -34,6 +34,7 @@ namespace Network.Server
                 if (value != null)
                 {
                     dataManager.Updates += OnNewUpdates;
+                    dataManager.Signal.SendRequest += Send;
                 }
             }
         }
@@ -221,11 +222,11 @@ namespace Network.Server
             }
             if (EventType == NetworkCommands.Signal)
             {
-                Signal.SignalRecived(data, SignalManager.SignalType.Signal);
+                dataManager.Signal.SignalRecived(data, SignalManager.SignalType.Signal);
             }
             if (EventType == NetworkCommands.SignalResponse)
             {
-                Signal.SignalRecived(data, SignalManager.SignalType.Response);
+                dataManager.Signal.SignalRecived(data, SignalManager.SignalType.Response);
             }
         }
 

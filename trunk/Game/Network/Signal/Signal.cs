@@ -15,7 +15,7 @@ namespace Network
     {
         UInt16 currentSignalID = 0;
 
-        private Dictionary<UInt16, Action<SignalBase>> SendSignals = new Dictionary<ushort, Action<SignalBase>>();
+        private Dictionary<UInt16, SignalsInfo> SendSignals = new Dictionary<ushort, SignalsInfo>();
         
         private Dictionary<Type, List<SubscriberInfo>> Subscribers = new Dictionary<Type, List<SubscriberInfo>>(); 
 
@@ -49,12 +49,16 @@ namespace Network
                     id = currentSignalID;
 
 
-                    SendSignals.Add(id, (o) =>
-                                {
-                                    T data = o as T;
-                                    if (data != null)
-                                        CallBack(data);
-                                });
+                    SendSignals.Add(id, new SignalsInfo()
+                    {
+                        Function = (o) =>
+                            {
+                                T data = o as T;
+                                if (data != null)
+                                    CallBack(data);
+                            },
+                        Item = Signal
+                    }); 
                 }
             }
 
@@ -140,6 +144,13 @@ namespace Network
 
         }
 
+        private class SignalsInfo
+        {
+            public Action<SignalBase> Function { get; set; }
+
+            public SignalBase Item { get; set; }
+        }
+
         #endregion 
 
         public void SignalRecived(byte[] Data,SignalType signalType )
@@ -195,7 +206,7 @@ namespace Network
             {
                 if(SendSignals.ContainsKey(id))
                 {
-                    SendSignals[id](item);
+                    SendSignals[id].Function(item);
                     SendSignals.Remove(id); 
                 }
             }
@@ -227,7 +238,7 @@ namespace Network
                 stream.Close();
                 return stream.GetBuffer();
             }
-            catch
+            catch(Exception e)
             {
                 return null; 
             }
@@ -239,13 +250,46 @@ namespace Network
             Response
         }
 
-        public event Action<NetworkCommands,byte[]> SendRequest; 
+        private event Action<NetworkCommands, byte[]> sendRequest;
+        public event Action<NetworkCommands,byte[]> SendRequest
+        {
+            add
+            {
+                SendUpdate(value);
+                sendRequest += value;
+            }
+            remove
+            {
+                sendRequest -= value;
+            }
+        }
+
+        private void SendUpdate(Action<NetworkCommands, byte[]> SignalManager_sendRequest)
+        {
+            lock (SendSignals)
+            {
+               
+                foreach (ushort id in SendSignals.Keys)
+                {
+                    byte[] signalByte = ToByte(SendSignals[id].Item);
+                    if (signalByte != null)
+                    {
+                        byte[] idByte = BitConverter.GetBytes(id);
+                        byte[] packet = new byte[signalByte.Length + idByte.Length];
+                        Array.Copy(idByte, packet, idByte.Length);
+                        Array.Copy(signalByte, 0, packet, idByte.Length, signalByte.Length);
+
+                        Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => SignalManager_sendRequest(NetworkCommands.Signal, packet)));
+                    }
+                }
+            }
+        }
 
         private void FireOnSendReqest(NetworkCommands commands,byte[] data)
         {
-            if(SendRequest != null)
+            if(sendRequest != null)
             {
-                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(()=>SendRequest(commands,data)); 
+                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(()=>sendRequest(commands,data))); 
             }
         }
 
@@ -270,7 +314,7 @@ namespace Network
             
         }
 
-
+        [field: NonSerialized]
         public event Action<SignalBase> DoneChanged; 
     }
 

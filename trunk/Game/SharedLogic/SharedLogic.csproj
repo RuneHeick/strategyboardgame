@@ -50,6 +50,7 @@
     <Compile Include="Production\Building\BuildingLoader.cs" />
     <Compile Include="Production\BuildingContainor.cs" />
     <Compile Include="Production\CreateBuildingRq.cs" />
+    <Compile Include="Production\ProductionMatrix.cs" />
     <Compile Include="Production\SchoolContainor.cs" />
     <Compile Include="Production\View\MyFactoryView.xaml.cs">
       <DependentUpon>MyFactoryView.xaml</DependentUpon>
@@ -67,6 +68,10 @@
     <Compile Include="Global\WarContainor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Network\Network.csproj">
+      <Project>{0f83e9d8-20c1-4660-a732-ef9211f3f1ce}</Project>
+      <Name>Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
       <Name>Utility</Name>
@@ -180,6 +185,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
+if not exist "$(TargetPath).locked" if exist "$(TargetPath)" move "$(TargetPath)" "$(TargetPath).locked"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

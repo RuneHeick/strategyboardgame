@@ -76,7 +76,7 @@ namespace Logic
             }
         }
 
-        public void AddRec(string Name, int StartValue)
+        public void AddRec(string Name, int StartValue, int max)
         {
             TagIntContainor item = Rec.FirstOrDefault((o) => o.RealName == Name);
             if (item == null)
@@ -87,6 +87,7 @@ namespace Logic
                     Rec.Add(rec);
                     manager.Add(rec);
                     rec.Value = StartValue;
+                    rec.Max = max;
                 }
             }
         }
@@ -129,7 +130,7 @@ namespace Logic
             }
             else
             {
-                AddRec(Name, quanitity); 
+                AddRec(Name, quanitity, 100); 
             }
         }
 

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using SharedLogic.Global;
+using Signals.War;
 
 namespace Coordinator.Logic
 {
@@ -18,7 +19,6 @@ namespace Coordinator.Logic
         ObservableCollection<ContainorItem> Armys = new ObservableCollection<ContainorItem>();
         DispatcherTimer timer = new DispatcherTimer();
 
-        ObservableCollection<WarContaionor> Wars = new ObservableCollection<WarContaionor>();
         Random warSelector = new Random(); 
         int warCount = 0; 
 
@@ -65,75 +65,59 @@ namespace Coordinator.Logic
 
         public void StartWar(DataManager Attacker)
         {
-            lock (Wars)
+            lock (Armys)
             {
                 var item = Armys.FirstOrDefault((o) => o.manager == Attacker);
                 if (item != null)
                 {
                     warCount++;
-                    var war = new WarContaionor(warCount);
-                    var warAttacker = new WarContaionor.CollectionItem();
+                    var war = new WarAttackRqSignal(warCount);
+                    var warAttacker = new WarArmyContainor();
 
 
                     warAttacker.Name = item.Name;
                     warAttacker.WarSkill = item.Attack.Value;
                     warAttacker.Alive = 0;
 
-                    war.Attacker = warAttacker; 
-                    Wars.Add(war);
-
-                    war.PropertyChanged += Attacker_PropertyChanged;
-                    Attacker.Add(war);
+                    war.Attacker = warAttacker;
+                    Attacker.Signal.Send<WarAttackRqSignal>(war, AttackerDone);
                 }
             }
 
         }
 
-        void Attacker_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void AttackerDone(WarAttackRqSignal obj)
         {
-            WarContaionor war = sender as WarContaionor; 
-            if(war != null && war.Attacker != null && war.Defender != null)
-            {
-                war.PropertyChanged -= Attacker_PropertyChanged;
+           if(obj.Defender != null)
+           {
+               var DefenterArmy = Armys.FirstOrDefault((o) => o.Name == obj.Defender);
+               if(DefenterArmy != null)
+               {
+                   var warDefenter = new WarArmyContainor();
 
-                var DefenterArmy = Armys.FirstOrDefault((o) => o.Name == war.Defender.Name);
-                if(DefenterArmy != null)
-                {
-                    var warDefenter = new WarContaionor.CollectionItem();
-                    
-                    warDefenter.WarSkill = DefenterArmy.Defence.Value;
-                    warDefenter.Alive = 0;
-                    warDefenter.Name = DefenterArmy.Name;
+                   warDefenter.WarSkill = DefenterArmy.Defence.Value;
+                   warDefenter.Alive = 0;
+                   warDefenter.Name = DefenterArmy.Name;
 
-                    war.Defender = warDefenter; 
+                   var item = new WarDefenceRqSignal(obj.ID);
+                   item.Attacker = obj.Attacker;
+                   item.Defender = warDefenter;
 
-                    DefenterArmy.manager.Add(war);
-                    war.PropertyChanged += Defender_PropertyChanged;
-                }
-                else
-                {
-                    war.PropertyChanged += Attacker_PropertyChanged;
-                }
-            }
-            else
-            {
+                   DefenterArmy.manager.Signal.Send(item, DefenceDone);
 
-            }
+               }
+           }
         }
 
-
-        void Defender_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void DefenceDone(WarDefenceRqSignal obj)
         {
-            WarContaionor item = sender as WarContaionor;
-            if (item != null && item.Defender.IsDone )
+            if(obj.Attacker != null && obj.Defender != null)
             {
-                
-                item.PropertyChanged -= Defender_PropertyChanged;
-                DoWar(item);
+                DoWar(obj);
             }
         }
 
-        private void DoWar(WarContaionor war)
+        private void DoWar(WarDefenceRqSignal war)
         {
             var AttackerArmy = Armys.FirstOrDefault((o) => o.Name == war.Attacker.Name);
             var DefenterArmy = Armys.FirstOrDefault((o) => o.Name == war.Defender.Name);
@@ -166,8 +150,8 @@ namespace Coordinator.Logic
 
                 DefenterArmy.Soldier.Value += DefenderSoldiers.Count;
                 DefenterArmy.Workers.Value += (war.Defender.Alive - DefenderSoldiers.Count);
-   
-                WarResultContaionor result = new WarResultContaionor(war.ID);
+
+                WarResultSignal result = new WarResultSignal();
                 if(AttackerSoldiers.Count == 0)
                 {
                     result.Loser = war.Attacker.Name;
@@ -182,10 +166,8 @@ namespace Coordinator.Logic
                     AttackerArmy.GamePoints.Value += MagicNumbers.WARWIN_GAMEPOINT; 
                 }
 
-                AttackerArmy.manager.Add(result);
-                DefenterArmy.manager.Add(result);
-                AttackerArmy.manager.Remove(war);
-                DefenterArmy.manager.Remove(war); 
+                AttackerArmy.manager.Signal.Send(result);
+                DefenterArmy.manager.Signal.Send(result);
             }
 
         }

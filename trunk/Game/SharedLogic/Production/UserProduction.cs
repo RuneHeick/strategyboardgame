@@ -15,9 +15,12 @@ namespace SharedLogic
         public ObservableCollection<BuildingContainor> Factories { get; private set; }
         DataManager manager;
         public UserRec rec { get; private set;  }
+        private ProductionMatrix productionMatrix; 
+
 
         public UserProduction(DataManager Manager, UserRec rec)
         {
+            productionMatrix = new ProductionMatrix(this);
             Factories = new ObservableCollection<BuildingContainor>();
             manager = Manager;
             this.rec = rec; 
@@ -75,10 +78,7 @@ namespace SharedLogic
         {
             lock(Factories)
             {
-                foreach(BuildingContainor b in Factories)
-                {
-                    b.Production(rec, Bonus);
-                }
+                productionMatrix.Produce(); 
             }
         }
 

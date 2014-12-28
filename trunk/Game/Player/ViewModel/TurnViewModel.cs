@@ -1,4 +1,5 @@
 ﻿using SharedLogic.Turn;
+using Signals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Player.ViewModel
 {
     public class TurnViewModel: ViewModelBase
     {
-        TurnTokenContainor turnInfo; 
+        TurnTokenSignal turnInfo;
 
-        public TurnViewModel(TurnTokenContainor TurnInfo)
+        public TurnViewModel(TurnTokenSignal TurnInfo)
         {
             turnInfo = TurnInfo; 
         }
@@ -34,7 +35,7 @@ namespace Player.ViewModel
             string action = obj as string;
             if (action != null)
             {
-                foreach(TurnTokenContainor.TurnAction Taction in Enum.GetValues(typeof(TurnTokenContainor.TurnAction)).Cast<TurnTokenContainor.TurnAction>())
+                foreach (TurnTokenSignal.TurnAction Taction in Enum.GetValues(typeof(TurnTokenSignal.TurnAction)).Cast<TurnTokenSignal.TurnAction>())
                 {
                     if(Enum.GetName(Taction.GetType(), Taction) == action)
                     {
@@ -44,7 +45,7 @@ namespace Player.ViewModel
 
                 }
             }
-
+            turnInfo.Done = true; 
             CreateCloseRequest();
         }
 

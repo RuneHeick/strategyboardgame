@@ -6,43 +6,73 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Utility.ViewModel;
+using Signals.War;
+using Network;
 
 namespace Player.ViewModel
 {
     public class WarViewModel:ViewModelBase
     {
-        WarContaionor Currentwar;  
+        SignalBase Currentwar;  
 
-        public WarViewModel(WarContaionor item, int maxSize)
+        public WarViewModel(WarAttackRqSignal item, int maxSize)
+        {
+            BaseInit(item);
+            
+            Attacker.ADLable = "Attack";
+            Attacker.IsMe = true;
+            Attacker.Item = item.Attacker;
+            Attacker.MaxSoldier = maxSize;
+            Attacker.IsSelectable = false;
+            Attacker.Users = new string[] { PlayerData.Instance.Client.LoginName };
+
+            Defender.IsSelectable = true;
+            Defender.IsMe = false;
+            Defender.ADLable = "";
+
+            Defender.Item = new WarArmyContainor(); 
+
+            List<string> namelist = new List<string>();
+            try
+            {
+                foreach (UsersList.CollectionItem user in PlayerData.Instance.Users.Users)
+                {
+                    if (user.Name != PlayerData.Instance.Client.LoginName)
+                        namelist.Add(user.Name);
+                }
+            }
+            catch
+            {
+
+            }
+
+            Defender.Users = namelist.ToArray();
+
+        }
+
+        public WarViewModel(WarDefenceRqSignal item, int maxSize)
+        {
+            BaseInit(item);
+            Attacker.ADLable = "Attacker";
+            Attacker.IsMe = false;
+            Attacker.Item = item.Attacker;
+            Attacker.IsSelectable = false;
+            Attacker.Users = new string[] { item.Attacker.Name };
+
+            Defender.IsSelectable = false;
+            Defender.IsMe = true;
+            Defender.Item = item.Defender;
+            Defender.ADLable = "Defence";
+            Defender.MaxSoldier = maxSize;
+            Defender.Users = new string[] { item.Defender.Name };
+
+        }
+
+        private void BaseInit(SignalBase item)
         {
             Currentwar = item; 
             Attacker = new WarItem();
-            Attacker.Item = new WarContaionor.CollectionItem(item.Attacker); 
-            Attacker.ADLable = "Attack"; 
-            if(Attacker.Item.Name == PlayerData.Instance.Client.LoginName)
-            {
-                Attacker.MaxSoldier = maxSize;
-                Attacker.IsMe = true; 
-            }
-            else
-            {
-                Attacker.IsMe = false;
-            }
-
-
-            Defender = new WarItem();
-            Defender.Item = new WarContaionor.CollectionItem(item.Defender); 
-            Defender.ADLable = "Defence";
-            if (Defender.Item.Name == PlayerData.Instance.Client.LoginName)
-            {
-                Defender.MaxSoldier = maxSize;
-                Defender.IsMe = true;
-            }
-            else
-            {
-                Defender.IsMe = false;
-                Defender.IsSelectable = true; 
-            }
+            Defender = new WarItem(); 
         }
 
 
@@ -69,13 +99,13 @@ namespace Player.ViewModel
 
         private void doneCommandExecute()
         {
-            if (Attacker.IsMe)
-                Attacker.Item.IsDone = true;
-            else
-                Defender.Item.IsDone = true; 
+            var item = Currentwar as WarAttackRqSignal;
+            if(item != null)
+            {
+                item.Defender = Defender.Item.Name; 
+            }
 
-            Currentwar.Defender = Defender.Item;
-            Currentwar.Attacker = Attacker.Item; 
+            Currentwar.Done = true; 
             OnClose(); 
         }
 
@@ -89,20 +119,9 @@ namespace Player.ViewModel
             
         }
 
-        public string[] Users
-        { 
-            get
-            {
-                List<string> temp = new List<string>(); 
-                foreach(UsersList.CollectionItem User in PlayerData.Instance.Users.Users)
-                {
-                    temp.Add(User.Name); 
-                }
-                return temp.ToArray();
-            }
-        }
+        public string[] Users { get; set; }
 
-        public WarContaionor.CollectionItem Item { get; set; }
+        public WarArmyContainor Item { get; set; }
 
         public string ADLable { get; set; }
 

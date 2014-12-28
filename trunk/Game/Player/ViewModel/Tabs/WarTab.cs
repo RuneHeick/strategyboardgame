@@ -7,6 +7,7 @@ using SharedData.Types;
 using System.Collections.ObjectModel;
 using SharedLogic.Global;
 using SharedData;
+using Signals.War;
 
 namespace Player.ViewModel.Tabs
 {
@@ -140,7 +141,36 @@ namespace Player.ViewModel.Tabs
                     }
                 }
             }
+
+            PlayerData.Instance.Manager.Signal.AddSignalHandler<WarAttackRqSignal>(StartWar);
+            PlayerData.Instance.Manager.Signal.AddSignalHandler<WarDefenceRqSignal>(EndWar);
+            PlayerData.Instance.Manager.Signal.AddSignalHandler<WarResultSignal>(WarResult);
         }
+
+        private void WarResult(WarResultSignal res)
+        {
+            if (res.Winner == PlayerData.Instance.Client.LoginName)
+            {
+                PlayerData.Instance.SwitchView(new WinViewModel(res), ViewPrioity.Top);
+            }
+            else
+            {
+                PlayerData.Instance.SwitchView(new LoseViewModel(res), ViewPrioity.Top);
+            }
+        }
+
+        private void StartWar(WarAttackRqSignal obj)
+        {
+            obj.Done = false;
+            PlayerData.Instance.SwitchView(new WarViewModel(obj, Soldier.Value), ViewPrioity.Top);
+        }
+
+        private void EndWar(WarDefenceRqSignal obj)
+        {
+            obj.Done = false;
+            PlayerData.Instance.SwitchView(new WarViewModel(obj, Soldier.Value), ViewPrioity.Top);
+        }
+
  
         void dataManager_CollectionChanged(string arg1, SharedData.ISharedData arg2, SharedData.ChangeType arg3, SharedData.DataManager arg4)
         {
@@ -162,30 +192,6 @@ namespace Player.ViewModel.Tabs
                 else if (item.RealName == "Soldier")
                 {
                     Soldier = item;
-                }
-            }
-
-            WarContaionor Con = arg2 as WarContaionor;
-            if (Con != null)
-            {
-                if (arg3 == SharedData.ChangeType.Added)
-                {
-                    PlayerData.Instance.SwitchView(new WarViewModel(Con, Soldier.Value), ViewPrioity.Top);
-                }
-            }
-            else if (arg3 == SharedData.ChangeType.Added)
-            {
-                WarResultContaionor res = arg2 as WarResultContaionor;
-                if(res != null)
-                {
-                    if(res.Winner == PlayerData.Instance.Client.LoginName)
-                    {
-                        PlayerData.Instance.SwitchView(new WinViewModel(res), ViewPrioity.Top);
-                    }
-                    else
-                    {
-                        PlayerData.Instance.SwitchView(new LoseViewModel(res), ViewPrioity.Top);
-                    }
                 }
             }
 
