@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using System.Windows;
 using SharedLogic.Production;
 using Coordinator.Logic.Building;
+using Signals.Building;
 
 namespace Coordinator.Logic
 {
@@ -104,22 +105,20 @@ namespace Coordinator.Logic
             {
                 UserBuildings.Add(pro);
             }
-
+            
             pro.Factories.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler((sender, e) =>Factories_CollectionChanged(sender,e,pro));
-            StringContainor MoveRq = new StringContainor("BuildingMove");
-            data.Add(MoveRq);
-
 
             var levelContaionor = ResearchManager.GetResearchStats("Buildings", data);
             int level = 0;
             if (levelContaionor != null)
                 level = (int)levelContaionor.Value; 
             data.Add(new BuildingInfoContainor("Buildings",level));
-            MoveRq.Value = ""; 
-
-            MoveRq.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler((o,p)=> MoveRqChanged(o,p,pro));
+            
 
             data.CollectionChanged += new Action<string,ISharedData,ChangeType,DataManager>((a,b,c,d)=>data_CollectionChanged(a,b,c,d,pro));
+
+            data.Signal.AddSignalHandler<MoveSignal>((o) => ClaimBuilding(o, pro));
+
         }
 
         void data_CollectionChanged(string arg1, ISharedData arg2, ChangeType arg3, DataManager arg4, UserProduction pro)
@@ -144,21 +143,11 @@ namespace Coordinator.Logic
             }
         }
 
-        private void MoveRqChanged(object o, System.ComponentModel.PropertyChangedEventArgs p, UserProduction pro)
-        {
-            StringContainor MoveRq = o as StringContainor; 
-            if(MoveRq != null)
-            {
-                Dispatcher.CurrentDispatcher.BeginInvoke(new Action(() => ClaimBuilding(MoveRq, pro)));
-            }
-        }
+        
 
-        void ClaimBuilding(StringContainor MoveRq, UserProduction pro)
+        void ClaimBuilding(MoveSignal signal, UserProduction pro)
         {
-            if (MoveRq.Value == "") return;
-            string building = MoveRq.Value;
-            building = building.ToLower();
-            MoveRq.Value = "";
+            string building = signal.Building.ToLower();
 
             lock (UserBuildings)
             {

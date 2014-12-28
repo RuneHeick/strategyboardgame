@@ -42,7 +42,6 @@ namespace Signals
                 if (selectedAction != value)
                 {
                     selectedAction = value;
-                    OnPropertyChanged("SelectedAction");
                 }
             }
         }

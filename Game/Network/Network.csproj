@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="AcceptedArg.cs" />
     <Compile Include="AcceptedLogin.cs" />
-    <Compile Include="Client\GameClient.cs" />
+    <Compile Include="Data\GameClient.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\ISharedData.cs" />
     <Compile Include="Data\TypeList.cs" />
@@ -62,8 +62,14 @@
     <Compile Include="Server\ResourceContainer.cs" />
     <Compile Include="Signal\Signal.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Client\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>if exist "$(TargetPath).locked" del "$(TargetPath).locked"
+if not exist "$(TargetPath).locked" if exist "$(TargetPath)" move "$(TargetPath)" "$(TargetPath).locked"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

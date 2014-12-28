@@ -11,7 +11,6 @@ using System.Windows.Threading;
 using Coordinator.ViewModel.SelectedViewModel;
 using System.Threading;
 using System.Windows.Input;
-using Signal;
 using Signals; 
 
 namespace Coordinator.ViewModel
@@ -49,8 +48,6 @@ namespace Coordinator.ViewModel
 
         private uint Turn = 0; 
 
-        TurnTokenContainor CurrentToken = null; 
-
 
 
         public TurnViewModel(MainWindowViewModel mainWindowViewModel)
@@ -72,7 +69,7 @@ namespace Coordinator.ViewModel
             {
                 t = new DispatcherTimer();
                 t.Tick += (o, s) => Next();
-                t.Interval = new TimeSpan(0, 0, 5);
+                t.Interval = new TimeSpan(0, 0, 10);
                 t.Start();
             }
             
@@ -85,24 +82,16 @@ namespace Coordinator.ViewModel
             t.Stop();
             if (mainWindowViewModel.Server.Cliens.Count > 0)
             {
-                if (CurrentToken != null)
-                {
-                    var man = mainWindowViewModel.Server.RCContainor[CurrentTeam];
-                    CurrentToken.PropertyChanged -= item_PropertyChanged;
-                    man.Remove(CurrentToken);
-                }
-
                 while (true)
                 {
                     CurrentIndex++;
                     var manager = mainWindowViewModel.Server.RCContainor[CurrentTeam];
                     if (mainWindowViewModel.Server.Cliens.FirstOrDefault((o) => o.dataManager == manager) != null)
                     {
-                        TurnTokenContainor item = new TurnTokenContainor();
-                        CurrentToken = item;
-                        CurrentToken.PropertyChanged += item_PropertyChanged;
+                        Turn++;
+                        TurnTokenSignal item = new TurnTokenSignal(Turn.ToString()) { Done = false};
+                        manager.Signal.Send<TurnTokenSignal>(item, TurnReplay);
 
-                        manager.Add(item);
                         mainWindowViewModel.Projection.CurrentTeam = CurrentTeam;
                         mainWindowViewModel.Projection.SelectedView = null;
                         break;
@@ -111,20 +100,23 @@ namespace Coordinator.ViewModel
             }
         }
 
-        void item_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void TurnReplay(TurnTokenSignal obj)
         {
-            t.Stop();
-            var manager = mainWindowViewModel.Server.RCContainor[CurrentTeam];
-
-            TurnTokenContainor item = sender as TurnTokenContainor;
-            if(item != null)
+            if (obj.ID == Turn.ToString())
             {
-                DoTurnData(manager, item);
-            }
+                t.Stop();
+                var manager = mainWindowViewModel.Server.RCContainor[CurrentTeam];
+                if (manager != null)
+                {
+                    DoTurnData(manager, obj);
+                }
 
-            if(!Pause)
-                t.Start(); 
+                if (!Pause)
+                    t.Start();
+            }
         }
+
+        
 
         private RelayCommand nextCommand;
         public ICommand NextCommand
@@ -132,43 +124,33 @@ namespace Coordinator.ViewModel
             get
             {
                 if (nextCommand == null)
-                    nextCommand = new RelayCommand((p) => SignalTest());
+                    nextCommand = new RelayCommand((p) => Next());
                 return nextCommand;
             }
         }
 
-        private void SignalTest()
-        {
-            mainWindowViewModel.Server.Cliens[0].Signal.Send<TurnTokenSignal>(new TurnTokenSignal(), ResponseSignal); 
-        }
-
-        private void ResponseSignal(TurnTokenSignal obj)
-        {
-            
-        }
-
-        private void DoTurnData(DataManager manager, TurnTokenContainor item)
+        private void DoTurnData(DataManager manager, TurnTokenSignal item)
         {
             SelectedBase selected = null; 
             switch(item.SelectedAction)
             {
-                case TurnTokenContainor.TurnAction.BorderLand:
+                case TurnTokenSignal.TurnAction.BorderLand:
                     selected = new Border(); 
                     break;
 
-                case TurnTokenContainor.TurnAction.RandomBuilding:
+                case TurnTokenSignal.TurnAction.RandomBuilding:
                     selected = new SelectedViewModel.Building(); 
                     break;
 
-                case TurnTokenContainor.TurnAction.RandomResearch:
+                case TurnTokenSignal.TurnAction.RandomResearch:
                     selected = new SelectedViewModel.Research(); 
                     break;
 
-                case TurnTokenContainor.TurnAction.RandomResources:
+                case TurnTokenSignal.TurnAction.RandomResources:
                     selected = new SelectedViewModel.Resources(); 
                     break;
 
-                case TurnTokenContainor.TurnAction.War:
+                case TurnTokenSignal.TurnAction.War:
                     selected = new SelectedViewModel.War(); 
                     break;
             }

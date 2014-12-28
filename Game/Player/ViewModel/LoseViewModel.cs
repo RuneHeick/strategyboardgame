@@ -1,4 +1,5 @@
 ﻿using SharedLogic.Global;
+using Signals.War;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,12 @@ namespace Player.ViewModel
     public class LoseViewModel:ViewModelBase
     {
 
-        WarResultContaionor warres; 
+        WarResultSignal warres; 
 
-        public LoseViewModel(WarResultContaionor res)
+        public LoseViewModel(WarResultSignal res)
         {
-            warres = res; 
+            warres = res;
+            warres.Done = false; 
         }
 
 
@@ -50,7 +52,7 @@ namespace Player.ViewModel
 
         private void doneCommandExecute()
         {
-            PlayerData.Instance.Manager.Remove(warres); 
+            warres.Done = true; 
             CreateCloseRequest(); 
         }
 

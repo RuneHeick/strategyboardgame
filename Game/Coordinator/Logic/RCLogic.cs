@@ -40,14 +40,14 @@ namespace Coordinator.Logic
             var user = new UserRec(data);
             managers.Add(user);
             
-            user.AddRec("Water",50);
-            user.AddRec("Food", 50);
-            user.AddRec("Power", 50);
-            user.AddRec("Game Point", 50);
-            user.AddRec("Attack", MagicNumbers.ATTACKDEFEND_STARTVALUE);
-            user.AddRec("Defence", MagicNumbers.ATTACKDEFEND_STARTVALUE);
-            user.AddRec("Soldier", 0);
-            user.AddRec("Worker", 0);
+            user.AddRec("Water",50, 100);
+            user.AddRec("Food", 50, 100);
+            user.AddRec("Power", 50, 100);
+            user.AddRec("Game Point", 50, 100);
+            user.AddRec("Attack", MagicNumbers.ATTACKDEFEND_STARTVALUE, 1000);
+            user.AddRec("Defence", MagicNumbers.ATTACKDEFEND_STARTVALUE, 1000);
+            user.AddRec("Soldier", 0, 100);
+            user.AddRec("Worker", 0, 100);
         }
 
     }

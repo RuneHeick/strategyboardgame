@@ -10,7 +10,9 @@ namespace SharedData.Types
     [Serializable]
     public class IntContainor:ISharedData
     {
-        private int value_ = 0; 
+        private int value_ = 0;
+        private int max_ = int.MaxValue;
+        private int min_ = int.MinValue;
 
         public int Value
         {
@@ -20,8 +22,39 @@ namespace SharedData.Types
             }
             set
             {
-                value_ = value;
+                if (value > Max)
+                    value_ = Max;
+                else if (value < Min)
+                    value_ = Min;
+                else
+                    value_ = value; 
                 OnPropertyChanged("Value");
+            }
+        }
+
+        public int Max
+        {
+            get
+            {
+                return max_; 
+            }
+            set
+            {
+                max_ = value;
+                OnPropertyChanged("Max"); 
+            }
+        }
+
+        public int Min
+        {
+            get
+            {
+                return min_;
+            }
+            set
+            {
+                min_ = value;
+                OnPropertyChanged("Min");
             }
         }
 

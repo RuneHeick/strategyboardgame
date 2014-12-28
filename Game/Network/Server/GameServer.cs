@@ -103,7 +103,6 @@ namespace Network.Server
                     if (manager != null)
                     {
                         client.dataManager = manager;
-                        client.Signal = RCContainor.GetSignalManager(client.LoginName, client.Password);
                         byte[] data = manager.GetAllData();
 
                         if (data != null)

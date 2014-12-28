@@ -1,5 +1,6 @@
 ﻿using SharedData.Types;
 using SharedLogic.Global;
+using Signals.War;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,7 @@ using Utility.ViewModel;
 namespace Player.ViewModel
 {
     public class WinViewModel : LoseViewModel
-    {
-
-        StringContainor MoveRq;//("BuildingMove");
-        
+    {        
         private string claim; 
         public string Claim
         {
@@ -30,18 +28,10 @@ namespace Player.ViewModel
         }
 
 
-        public WinViewModel(WarResultContaionor res):base(res)
+        public WinViewModel(WarResultSignal res):base(res)
         {
-            MoveRq = PlayerData.Instance.Manager.GetItem<StringContainor>("BuildingMove");
-            if(MoveRq != null)
-                MoveRq.PropertyChanged += MoveRq_PropertyChanged;
+            Claim = ""; 
         }
-
-        void MoveRq_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            Claim = MoveRq.Value; 
-        }
-
         
         private RelayCommand claimCommand;
         public ICommand ClaimCommand
@@ -56,7 +46,12 @@ namespace Player.ViewModel
 
         private void claimCommandExecute()
         {
-            MoveRq.Value = Claim;  
+            if (Claim != "")
+            {
+                Signals.Building.MoveSignal moveSignal = new Signals.Building.MoveSignal() { Building = Claim };
+                PlayerData.Instance.Client.dataManager.Signal.Send(moveSignal);
+                Claim = "";
+            }
         }
 
     }
