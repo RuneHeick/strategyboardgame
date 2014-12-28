@@ -78,7 +78,7 @@ namespace SharedLogic
         {
             lock(Factories)
             {
-                productionMatrix.Produce(); 
+                //productionMatrix.Produce(); 
             }
         }
 
