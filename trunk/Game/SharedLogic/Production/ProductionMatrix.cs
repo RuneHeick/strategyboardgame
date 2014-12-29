@@ -62,7 +62,7 @@ namespace SharedLogic
             {
                 foreach(string key in fac.Uses.Keys)
                 {
-                    sum[key] = (-1*fac.Uses[key]);
+                    sum[key] = fac.Uses[key];
                 }
             }
 
@@ -86,7 +86,7 @@ namespace SharedLogic
                 {
                     if(rec.Resource == key)
                     {
-                        closeSum -= rec.Quantity;
+                        closeSum += rec.Quantity;
                         if (fac.IsActive)
                         {
                             fac.IsActive = false;
@@ -96,7 +96,7 @@ namespace SharedLogic
                     }
 
                 }
-                if(fac.CreationBonus.Resource == key)
+                if (fac.CreationBonus != null && fac.CreationBonus.Resource == key)
                 {
                     closeSum -= fac.CreationBonus.Quantity;
                     if (fac.IsActive)
@@ -123,14 +123,12 @@ namespace SharedLogic
                 Uses = new Dictionary<string,int>(); 
                 FactoryBuilding = item.Id;
 
-                if (item.CreationBonus != null)
-                    this[item.CreationBonus.Resource] = item.CreationBonus.Quantity; 
                 if(item.ProductionType != null)
                     this[item.ProductionType.Resource] = item.ProductionType.Quantity; 
 
                 foreach(var useItem in item.Uses)
                 {
-                    this[useItem.Resource] = useItem.Quantity;
+                    this[useItem.Resource] = (-1*useItem.Quantity);
                 }
 
             }
