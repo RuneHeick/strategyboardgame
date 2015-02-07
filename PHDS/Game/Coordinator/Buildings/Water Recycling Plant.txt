@@ -1,0 +1,12 @@
+Create
+Water=100
+Give 
+Worker=-3
+Cost
+Power=20
+BuildingFee
+Power=120
+Water=20
+Food=10
+Level
+Level=3

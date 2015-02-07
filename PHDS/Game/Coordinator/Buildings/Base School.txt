@@ -1,0 +1,9 @@
+Create
+Give 
+Worker=-1
+Cost
+Power=20
+BuildingFee
+Power=50
+Food=20
+Water=10

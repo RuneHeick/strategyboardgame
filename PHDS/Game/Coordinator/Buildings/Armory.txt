@@ -1,0 +1,13 @@
+Create
+Give 
+Attack=20
+Cost
+Power=50
+Water=50
+Food=50
+BuildingFee
+Power=300
+Water=300
+Food=300
+Level
+Level=4

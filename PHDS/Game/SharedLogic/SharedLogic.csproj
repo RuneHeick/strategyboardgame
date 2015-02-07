@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CCAC50F3-B4D3-4546-9795-8049DFBEE4CD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SharedLogic</RootNamespace>
+    <AssemblyName>SharedLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Global\UsersList.cs" />
+    <Compile Include="Global\WarResultContainor.cs" />
+    <Compile Include="Production\Building\BuildingInfo.cs" />
+    <Compile Include="Production\Building\BuildingInfoContainor.cs" />
+    <Compile Include="Production\Building\BuildingLoader.cs" />
+    <Compile Include="Production\BuildingContainor.cs" />
+    <Compile Include="Production\CreateBuildingRq.cs" />
+    <Compile Include="Production\SchoolContainor.cs" />
+    <Compile Include="Production\View\MyFactoryView.xaml.cs">
+      <DependentUpon>MyFactoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Production\View\FactoryView.xaml.cs">
+      <DependentUpon>FactoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Production\View\CostConverter.cs" />
+    <Compile Include="Production\View\ImageConverter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Production\UserProduction.cs" />
+    <Compile Include="Rec\UserRec.cs" />
+    <Compile Include="Rec\RecDemand.cs" />
+    <Compile Include="Turn\TurnTokenContainor.cs" />
+    <Compile Include="Global\WarContainor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharedData\SharedData.csproj">
+      <Project>{cd2eeb53-51ac-4c28-ae55-84ccafe298ba}</Project>
+      <Name>SharedData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{c4d9761e-318f-425c-bb76-a83d476c2e6b}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\army4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\bathroom4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\bolt1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\bread4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\broccoli.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\cross9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\energy1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\factory11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\factory12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\factory6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\factory7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\factory8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\farmer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\glass35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\group58.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\microscope4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\militar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\person14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\rain14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\restaurant2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\robot3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\robotic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\shield54.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\small32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\test17.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\two169.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\warrior.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\wind2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\house58.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Production\View\MyFactoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Production\View\FactoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\default image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\rectangles8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\airplane61.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

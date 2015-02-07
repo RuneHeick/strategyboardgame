@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Player.View.WinView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="You Win" FontSize="50" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" TextBlock.FontSize="30"  HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Winner, FallbackValue=Player1}" Margin="0,0,10,0"/>
+            <TextBlock Text="vs." Margin="0,0,10,0"/>
+            <TextBlock Text="{Binding Loser, FallbackValue=Player2}" Margin="0,0,10,0" />
+        </StackPanel>
+        
+        <StackPanel Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" >
+            <TextBlock Margin="5">Building:</TextBlock>
+            <TextBox Width="100" Margin="5" Text="{Binding Claim}"></TextBox>
+            <Button Content="Claim" Margin="5" Command="{Binding ClaimCommand}"/>
+        </StackPanel>
+
+        <Button Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Content=" Done " Margin="5" Command="{Binding DoneCommand}"/>
+    </Grid>
+</UserControl>
