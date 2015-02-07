@@ -1,0 +1,77 @@
+﻿<Window x:Class="Coordinator.View.ProjektionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:mvvm="clr-namespace:Utility.Helper;assembly=Utility"
+        xmlns:view="clr-namespace:Coordinator.View"
+        xmlns:sview="clr-namespace:Coordinator.View.SelectedView"
+        xmlns:svm="clr-namespace:Coordinator.ViewModel.SelectedViewModel"
+        Title="ProjektionView" Height="500" Width="500">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type svm:Border}">
+            <sview:Border />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:Building}">
+            <sview:Building />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:Research}">
+            <sview:Research />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:Resources}">
+            <sview:Resources />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type svm:War}">
+            <sview:War />
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="2" Text="{Binding CurrentTeam, FallbackValue=Team}" FontSize="40" HorizontalAlignment="Center" />
+        <Border Grid.Column="1" Grid.Row="1" BorderThickness="2" BorderBrush="Black" CornerRadius="10" Margin="5">
+            <ContentControl  Content="{Binding SelectedView}" />
+        </Border>
+        <ItemsControl  Grid.RowSpan="2" ItemsSource="{Binding Stats, Mode=OneWay}"  >
+            <ItemsControl.Resources>
+                <mvvm:DataContextSpy x:Key="spy" />
+                <view:BackgroundConverter x:Key="BackgroundConverter" />
+            </ItemsControl.Resources>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Height="60" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Line.Title, Mode=OneWay}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5" />
+                            <TextBlock Margin="5" FontSize="14" VerticalAlignment="Center" >(Points</TextBlock>
+                            <TextBlock Margin="5" FontSize="14" Text="{Binding Average}" VerticalAlignment="Center" ></TextBlock>
+                            <TextBlock Margin="5" FontSize="14" VerticalAlignment="Center" >)</TextBlock>
+                        </StackPanel>
+                        
+                        <Border.Background>
+                            <MultiBinding Converter="{StaticResource BackgroundConverter}">
+                                <Binding  />
+                                <Binding Source="{StaticResource spy}"  Path="DataContext.CurrentTeam" />
+                            </MultiBinding>
+                        </Border.Background>
+                        
+                        
+                    </Border>
+                    
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <oxy:Plot Grid.Row="3" Grid.ColumnSpan="2" Model="{Binding Model}" />
+        
+    </Grid>
+</Window>

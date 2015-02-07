@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Coordinator.View.SelectedView.Border"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Coordinator.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <view:ImageConverter x:Key="ImageConverter" />
+    </UserControl.Resources>
+    <Grid>
+        
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Image Height="200" Width="200" Source="{Binding Image, Converter={StaticResource ImageConverter}, Mode=OneWay}" />
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40">Border</TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>
